@@ -1,17 +1,20 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <div class="tmp">Work in progress!</div>
+    <Letter lcipher='a' lplain='b'></Letter>
+    <Letter lcipher='a' lplain='b'></Letter>
+    <Letter lcipher='a' lplain='b'></Letter>
+    <Letter lcipher='a' lplain='b'></Letter>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import Letter from './components/Letter.vue'
 
 export default {
   name: 'app',
   components: {
-    HelloWorld
+    Letter
   }
 }
 </script>
