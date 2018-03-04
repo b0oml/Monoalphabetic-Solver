@@ -5,16 +5,19 @@
     <Letter lcipher='a' lplain='b'></Letter>
     <Letter lcipher='a' lplain='b'></Letter>
     <Letter lcipher='a' lplain='b'></Letter>
+    <Texte text="test de text"/>
   </div>
 </template>
 
 <script>
 import Letter from './components/Letter.vue'
+import Texte from './components/Texte.vue'
 
 export default {
   name: 'app',
   components: {
-    Letter
+    Letter,
+    Texte
   }
 }
 </script>

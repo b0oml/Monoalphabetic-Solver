@@ -1,7 +1,7 @@
 <template>
 <div class="letter" >
-    <div :class="{'letter-up': true}" disabled="disabled">{{ lcipher }}</div>
-    <div tabindex="1" ref="input" :class="{'letter-down': true, 'active': isActive}" @keydown="setValue">{{ value }}</div>
+    <div :class="{'up': true}" disabled="disabled">{{ lcipher }}</div>
+    <div tabindex="1" ref="input" :class="{'down': true, 'active': isActive}" @keydown="setValue">{{ value }}</div>
 </div>
 </template>
 
@@ -30,11 +30,12 @@ export default {
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .letter{
+    vertical-align: top;
     display:inline-block;
     margin: -1px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
 }
-.letter-up, .letter-down{
+.up, .down{
     width: 12px;
     height: 20px;
     padding: 0px 3px 0px 3px;
@@ -45,11 +46,11 @@ export default {
     color: #63562E;
     border: #D0BE90 solid 1px;
 }
-.letter-up{
+.up{
     margin-bottom: -1px;
     opacity: 0.5;
 }
-.letter-up:hover, .letter-up:hover ~ .letter-down, .letter-down:hover{
+.up:hover, .up:hover ~ .down, .down:hover{
     font-weight: 700;
 }
 .letter *:focus {
@@ -57,7 +58,7 @@ export default {
     color: #c00;
 }
 
-/* .letter-A{
+/* .A{
     color: #c00;
 } */
 </style>
