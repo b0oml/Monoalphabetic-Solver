@@ -55,7 +55,8 @@ export default {
 }
 .letter *:focus {
     font-weight: 700;
-    color: #c00;
+    color: #fff;
+    background: linear-gradient(#c00,#d00,#b00);
 }
 
 /* .A{
