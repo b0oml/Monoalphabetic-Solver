@@ -1,29 +1,25 @@
 <template>
-<div class="letter" >
+<div class="letter" @click="onClick">
     <div :class="{'up': true}" disabled="disabled">{{ lcipher }}</div>
-    <div tabindex="1" ref="input" :class="{'down': true, 'active': isActive}" @keydown="setValue">{{ value }}</div>
+    <div :class="{'down': true, 'active': active, 'selected': selected}">{{ lplain }}</div>
 </div>
 </template>
 
 <script>
 export default {
-  name: 'Letter',
-  props: {
-    lcipher: String,
-    lplain: String,
-  },
-  data() {
-    return {
-        isActive: false,
-        value: this.lplain
+    name: 'Letter',
+    props: {
+        pos: Number,
+        lcipher: String,
+        lplain: String,
+        active: Boolean,
+        selected: Boolean
+    },
+    methods: {
+        onClick() {
+            this.$emit('click', {pos: this.pos})
+        }
     }
-  },
-  methods: {
-      setValue(event) {
-          console.log(event);
-          this.value = event.key
-      }
-  }
 }
 </script>
 
@@ -53,7 +49,10 @@ export default {
 .up:hover, .up:hover ~ .down, .down:hover{
     font-weight: 700;
 }
-.letter *:focus {
+.letter .selected {
+    outline: 1px solid black;
+}
+.letter .active {
     font-weight: 700;
     color: #c00;
 }
