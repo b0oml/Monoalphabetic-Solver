@@ -1,7 +1,7 @@
 <template>
 <div class="letter" @click="onClick">
     <div :class="{'up': true}" disabled="disabled">{{ lcipher }}</div>
-    <div :class="{'down': true, 'active': active, 'selected': selected}">{{ lplain }}</div>
+    <div :class="{'down': true, 'active': active, 'selected': selected && active}">{{ lplain }}</div>
 </div>
 </template>
 
@@ -49,13 +49,13 @@ export default {
 .up:hover, .up:hover ~ .down, .down:hover{
     font-weight: 700;
 }
-.letter .selected {
-    outline: 1px solid black;
-}
 .letter .active {
     font-weight: 700;
     color: #fff;
-    background: linear-gradient(#c00,#d00,#b00);
+    background: #d00;
+}
+.letter .selected {
+    background: blue;
 }
 
 /* .A{

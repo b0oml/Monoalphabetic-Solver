@@ -1,6 +1,6 @@
 <template>
 <div class="text" @keydown="key" tabindex="1">
-    <div class="tmp">Pos : {{this.pos}}</div>
+    <!-- <div class="tmp">Pos : {{this.pos}}</div> -->
     <Letter v-for="l in letters"
         :key="l.id"
         :pos="l.id"
@@ -21,38 +21,11 @@ export default {
             type: String,
             default: 'abcdefghijklmnopqrstuvwxyz'
         },
-        // sub: Object  // TODO sub in porps
+        sub: Object,
+        currentLetter: String
     },
     data() {
         return {
-            sub: { // TODO sub in props
-                a: 'a',
-                b: 'b',
-                c: 'c',
-                d: 'd',
-                e: 'e',
-                f: 'f',
-                g: 'g',
-                h: 'h',
-                i: 'i',
-                j: 'j',
-                k: 'k',
-                l: 'l',
-                m: 'm',
-                n: 'n',
-                o: 'o',
-                p: 'p',
-                q: 'q',
-                r: 'r',
-                s: 's',
-                t: 't',
-                u: 'u',
-                v: 'v',
-                w: 'w',
-                x: 'x',
-                y: 'y',
-                z: 'z',
-            },
             splittedText: this.text.split(''),
             pos: 0,
         }
@@ -67,14 +40,12 @@ export default {
                     plain: this.sub[x],
                     selected: i == this.pos
                 }) )
-        },
-        currentLetter() {
-            return this.text[this.pos]
         }
     },
     methods: {
         clickLetter({pos}) {
             this.pos = pos;
+            this.$emit('select', this.text[pos])
         },
         key({keyCode, key}) {
             if(keyCode == 37) { // Left
@@ -87,10 +58,10 @@ export default {
                 //TODO
             } else {
                 if (key.length == 1 && /[a-zA-Z0-9-_ ]/.test(key)) {
-                    //TODO emit sub change
-                    this.sub[this.currentLetter] = key;
+                    this.$emit('change', {from: this.currentLetter, to: key})
                 }
             }
+            this.$emit('select', this.text[this.pos])
         }
     },
     components: {
@@ -101,18 +72,7 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
-}
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.text:focus {
+    outline: none
 }
 </style>
