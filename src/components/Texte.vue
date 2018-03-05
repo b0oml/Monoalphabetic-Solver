@@ -56,6 +56,7 @@ export default {
             } else {
                 if (key.length == 1) { //&& /[a-zA-Z0-9-_ ]/.test(key)
                     this.$emit('change', {from: this.currentLetter, to: key})
+                    this.pos++
                 }
             }
             this.$emit('select', this.text[this.pos])
