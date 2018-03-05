@@ -1,13 +1,13 @@
 <template>
 <div class="text" @keydown="key" tabindex="1">
     <!-- <div class="tmp">Pos : {{this.pos}}</div> -->
-    <Letter v-for="l in letters"
-        :key="l.id"
-        :pos="l.id"
+    <Letter v-for="(l, i) in letters"
+        :key="i"
+        :pos="i"
         :lplain="l.plain"
         :lcipher="l.letter"
-        :active="l.active"
-        :selected="l.selected"
+        :active="l.letter == currentLetter"
+        :selected="i == pos"
         @click="clickLetter" />
 </div>
 </template>
@@ -33,12 +33,9 @@ export default {
     computed: {
         letters() {
             return this.splittedText
-                .map((x, i) => ({
+                .map(x => ({
                     letter: x,
-                    active: x == this.currentLetter,
-                    id: i,
-                    plain: this.sub[x],
-                    selected: i == this.pos
+                    plain: this.sub[x] || x
                 }) )
         }
     },
@@ -57,7 +54,7 @@ export default {
             } else if (keyCode == 40) { // Bottom
                 //TODO
             } else {
-                if (key.length == 1 && /[a-zA-Z0-9-_ ]/.test(key)) {
+                if (key.length == 1) { //&& /[a-zA-Z0-9-_ ]/.test(key)
                     this.$emit('change', {from: this.currentLetter, to: key})
                 }
             }

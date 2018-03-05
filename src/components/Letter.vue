@@ -1,6 +1,6 @@
 <template>
 <div class="letter" @click="onClick">
-    <div :class="{'up': true}" disabled="disabled">{{ lcipher }}</div>
+    <div :class="{'up': true, 'active': active}" disabled="disabled">{{ lcipher }}</div>
     <div :class="{'down': true, 'active': active, 'selected': selected && active}">{{ lplain }}</div>
 </div>
 </template>
@@ -51,11 +51,11 @@ export default {
 }
 .letter .active {
     font-weight: 700;
-    color: #fff;
-    background: #d00;
+    /* color: #fff; */
+    color: #d00;
 }
 .letter .selected {
-    background: blue;
+    background: darkgrey;
 }
 
 /* .A{
