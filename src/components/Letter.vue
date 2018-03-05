@@ -51,11 +51,11 @@ export default {
 }
 .letter .active {
     font-weight: 700;
-    /* color: #fff; */
     color: #d00;
 }
 .letter .selected {
-    background: darkgrey;
+    background: linear-gradient(#d00,#e00,#c80000);
+    color: #fff;
 }
 
 /* .A{
