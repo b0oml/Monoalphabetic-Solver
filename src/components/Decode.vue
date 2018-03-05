@@ -110,7 +110,26 @@ export default {
     },
     computed: {
         ic() {
-            return 0.07
+            const text = this.text.toLowerCase()
+            const letters = {}
+            let lettersCount = 0
+            for(const l of text) {
+                if(!letters[l]) {
+                    letters[l] = 1
+                } else {
+                    letters[l] += 1
+                }
+                lettersCount += 1
+            }
+            console.log(letters);
+            
+            const denom = lettersCount * (lettersCount - 1)
+
+            let ret = 0.0
+            for(const v of Object.values(letters)) {
+                ret += (v * (v - 1)) / denom
+            }
+            return Math.round(ret * 1000) / 1000
         },
         detectedLanguage() {
             const ics = {
