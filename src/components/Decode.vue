@@ -96,7 +96,15 @@ export default {
     },
     comuted: {
         ic() {
-            return 0.05
+            // Text initialization
+            let text = this.text.toLowerCase()
+            text = text.replace(/[^a-z]/, '')
+            // IC computing
+            let ic = 0
+            let n = text.length
+            for (const c of text){
+                // Démerde toi
+            }
         }
     },
     methods: {
