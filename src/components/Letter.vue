@@ -1,7 +1,7 @@
 <template>
 <div class="letter" @click="onClick">
     <div :class="{'up': true, 'active': active}" disabled="disabled">{{ lcipher }}</div>
-    <div :class="{'down': true, 'active': active, 'selected': selected && active}">{{ lplain }}</div>
+    <div :class="{'down': true, 'active': active, 'selected': selected}">{{ lplain }}</div>
 </div>
 </template>
 
@@ -38,7 +38,7 @@ export default {
     background: linear-gradient(#fcf8ea,#ffffff,#f8efd3);
     font: normal 12px/22px "Lucida Console", "Trebuchet MS", Arial, Helvetica, sans-serif;
     text-align: center;
-    text-transform: uppercase;
+    /* text-transform: uppercase; */
     color: #63562E;
     border: #D0BE90 solid 1px;
 }

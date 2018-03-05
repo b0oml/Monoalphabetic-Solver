@@ -5,8 +5,8 @@
         :key="i"
         :pos="i"
         :lplain="l.plain"
-        :lcipher="l.letter"
-        :active="l.letter == currentLetter"
+        :lcipher="l.cipher"
+        :active="l.cipher == currentLetter"
         :selected="i == pos"
         @click="clickLetter" />
 </div>
@@ -26,31 +26,60 @@ export default {
     },
     data() {
         return {
-            splittedText: this.text.split(''),
             pos: 0,
         }
     },
     computed: {
+        splittedText() {
+            return this.text.split('')
+        },
         letters() {
             return this.splittedText
-                .map(x => ({
-                    letter: x,
-                    plain: this.sub[x] || x
-                }) )
+                .map(x => {
+                    if(x == ' $') {
+                        return {
+                            cipher: '_',
+                            plain: ' '
+                        }
+                    } else {
+                        return {
+                            cipher: x,
+                            plain: this.sub[x] || x
+                        }
+                    }
+                })
         }
     },
     methods: {
-        clickLetter({pos}) {
-            this.pos = pos;
-            this.$emit('select', this.text[pos])
+        sendLetter() {
+            let letter = this.splittedText[this.pos]
+            if(letter == ' $') letter = ' '
+            this.$emit('select', letter)
         },
-        key({keyCode, key}) {
-            if(keyCode == 37) { // Left
+        clickLetter({pos}) {
+            this.pos = pos
+            this.sendLetter()
+        },
+        key(e) {
+            const keyCode = e.keyCode
+            const key = e.key
+            // console.log(keyCode, key);
+            
+            if(keyCode >= 112 && keyCode <= 123) return // Do nothing on Function key
+
+            e.preventDefault();
+            if(keyCode == 9) {
+                this.splittedText.splice(this.pos, 0, ' $')
+                this.pos++
+            } else if(keyCode == 8) {
+                if(this.splittedText[this.pos] == ' $')
+                    this.splittedText.splice(this.pos, 1)
+            } else if(keyCode == 37) { // Left
                 this.pos = Math.max(0, this.pos - 1);
             } else if (keyCode == 38) { // Top
                 //TODO
             } else if (keyCode == 39) { // Right
-                this.pos = Math.min(this.text.length, this.pos + 1);
+                this.pos = Math.min(this.splittedText.length, this.pos + 1);
             } else if (keyCode == 40) { // Bottom
                 //TODO
             } else {
@@ -59,7 +88,7 @@ export default {
                     this.pos++
                 }
             }
-            this.$emit('select', this.text[this.pos])
+            this.sendLetter()
         }
     },
     components: {

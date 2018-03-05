@@ -4,7 +4,7 @@
             <div id="informations" class="item">
                 <span class="item-title">Informations</span>
                 <ul>
-                    <li><strong>IC :</strong> 0.076 (French)
+                    <li><strong>IC :</strong> {{ ic }} ({{ detectedLanguage }})
                         <a href="https://www.dcode.fr/index-coincidence" class="tooltip preline" data-balloon=" Index of Coincidence is a cryptanalysis technique studying the probability of finding repeating letters in an encrypted text.
                         English : 0.0667
                         French : 0.0778" data-balloon-length="xlarge" data-balloon-pos="right">?</a>
@@ -16,19 +16,24 @@
             <div id="missing-letters" class="item">
                 <span class="item-title">Missing letters in alphabet</span>
                 <div id="missing-letters-letters">
-                    <!-- /// -->
+                    <Texte :text="missingLetters" :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
                 </div>
             </div>
             <div id="multiple-letters" class="item">
                 <span class="item-title">Multiple letters in alphabet</span>
                 <div id="multiple-letters-letters">
-                    <!-- /// -->
+                    <Texte :text="multipleLetters" :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
                 </div>
             </div>
             <div id="biggest-words" class="item">
                 <span class="item-title">Biggest words</span>
                 <div id="biggest-words-letters">
-                    <!-- /// -->
+                </div>
+            </div>
+            <div class="item" id="debug">
+                <span class="item-title">Debug</span>
+                <div>
+                    <p>Letter: {{ currentLetter }}</p>
                 </div>
             </div>
         </div>
@@ -36,10 +41,13 @@
             <div id="alphabet" class="item">
                 <span class="item-title">Alphabet</span>
                 <div id="alphabet-letters">
-                    <Texte :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
+                    <alphabet :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
                 </div>
                 <div class="stickbar">
-                    <span class="stickbar-item" data-balloon="Copy the decrypted alphabet"  data-balloon-pos="left">Copy</span>
+                    <span class="stickbar-item" data-balloon="Copy the decrypted alphabet"  data-balloon-pos="left"
+                        v-clipboard:copy="alphabetText"
+                        v-clipboard:success="copySucced"
+                        v-clipboard:error="copyError">Copy</span>
                 </div>
             </div>
             <div id="cipher" class="item">
@@ -48,7 +56,10 @@
                     <Texte :text="text" :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
                 </div>
                 <div class="stickbar">
-                    <span class="stickbar-item" data-balloon="Copy the decrypted text" data-balloon-length="medium" data-balloon-pos="left">Copy</span>
+                    <span class="stickbar-item" data-balloon="Copy the decrypted text" data-balloon-length="medium" data-balloon-pos="left"
+                        v-clipboard:copy="plainText"
+                        v-clipboard:success="copySucced"
+                        v-clipboard:error="copyError">Copy</span>
                 </div>
             </div>
         </div>
@@ -57,6 +68,8 @@
 
 <script>
 import Texte from './Texte.vue'
+import Alphabet from './Alphabet.vue'
+import Vue from 'vue'
 
 export default {
     name: 'Decode',
@@ -91,25 +104,81 @@ export default {
                 z: 'z',
             },
             currentLetter: "",
-            text: "FAR ILJJAR DTKRTKSR, TURRG SQTDUGSA FAR DTKRAUQR (SIA TDVAKSUQA LN SIA DTKEGKC JAK AK VAQRGLK LQGCGKTFA), ARS F'UKA DAR EGKPUTKSA-RGX KLUVAFFAR D'TQSIUQ ELKTK DLYFA JASSTKS AK REAKA FA DASAESGVA RIAQFLEB ILFJAR.F'GKSQGCUA DA FT KLUVAFFA. FAR ILJJAR DTKRTKSR QAOLRA RUQ UKA AKGCJA EQYOSLCQTOIGPUA. DTKR EASSA KLUVAFFA, RIAQFLEB ILFJAR QAURRGS T HQGRAQ FA ELDA DAR JARRTCAR EIGNNQAR PUG SAQQGNGAKS FT NAJJA DA RLK EFGAKS. EAR JARRTCAR RLKS ELJOLRAR DA RUGSAR DA RYJHLFAR DGNNAQAKSR, AK NLQJA DA OAQRLKKTCAR (TOOAFAR RSGEBJAK) TCGSTKS FAR HQTR AS FAR MTJHAR, OTQNLGR JUKGR DA OASGSR DQTOATUX : FAR « ILJJAR DTKRTKSR ».RIAQFLEB ILFJAR OTQVGAKS T ELJOQAKDQA FT RGCKGNGETSGLK DA EAR RAQGAR DA DARRGKR AK ASUDGTKS FAR NQAPUAKEAR D'TOOTQGSGLK DA  EITPUA OAQRLKKTCA, RAFLK FT JASILDA DA F'TKTFYRA NQAPUAKSGAFFA. FA EIGNNQA DA EA EQYOSLCQTJJA ARS AK NTGS SQAR RGJOFA. GF R'TCGS D'UKA RUHRSGSUSGLK TFOITHASGPUA : EITPUA OASGS OAQRLKKTCA QAOQARAKSA UKA FASSQA. F'GKSAQAS DA EA EIGNNQA ARS RT DGREQASGLK : USGFGRA DTKR DAR JARRTCAR CQGHLUGFFAR RUQ DAR JUQR LU DAR HLUSR DA OTOGAQ, GF OTRRA GKTOAQEU ETQ LK OAUS FA OQAKDQA OLUQ UK DARRGK D'AKNTKS -- EA PUA NTGS D'THLQD FA DLESAUQ WTSRLK, HGAK RUQ ! EAR CQGHLUGFFGR RLKS AK NTGS UKA NLQJA DA RSACTKLCQTOIGA, F'TQS DA QAKDQA TKLDGKR FAR JARRTCAR FAR OFUR RAEQASR.FA NFTC DA EAS AOQAUVA ARS AKRGHR{DTKEGKC_JAK_EGOIAQ_GR_JLKLTFOITHASGE}".toLowerCase()
+            text: "FAR ILJJAR DTKRTKSR, TURRG SQTDUGSA FAR DTKRAUQR (SIA TDVAKSUQA LN SIA DTKEGKC JAK AK VAQRGLK LQGCGKTFA), ARS F'UKA DAR EGKPUTKSA-RGX KLUVAFFAR D'TQSIUQ ELKTK DLYFA JASSTKS AK REAKA FA DASAESGVA RIAQFLEB ILFJAR.F'GKSQGCUA DA FT KLUVAFFA. FAR ILJJAR DTKRTKSR QAOLRA RUQ UKA AKGCJA EQYOSLCQTOIGPUA. DTKR EASSA KLUVAFFA, RIAQFLEB ILFJAR QAURRGS T HQGRAQ FA ELDA DAR JARRTCAR EIGNNQAR PUG SAQQGNGAKS FT NAJJA DA RLK EFGAKS. EAR JARRTCAR RLKS ELJOLRAR DA RUGSAR DA RYJHLFAR DGNNAQAKSR, AK NLQJA DA OAQRLKKTCAR (TOOAFAR RSGEBJAK) TCGSTKS FAR HQTR AS FAR MTJHAR, OTQNLGR JUKGR DA OASGSR DQTOATUX : FAR « ILJJAR DTKRTKSR ».RIAQFLEB ILFJAR OTQVGAKS T ELJOQAKDQA FT RGCKGNGETSGLK DA EAR RAQGAR DA DARRGKR AK ASUDGTKS FAR NQAPUAKEAR D'TOOTQGSGLK DA  EITPUA OAQRLKKTCA, RAFLK FT JASILDA DA F'TKTFYRA NQAPUAKSGAFFA. FA EIGNNQA DA EA EQYOSLCQTJJA ARS AK NTGS SQAR RGJOFA. GF R'TCGS D'UKA RUHRSGSUSGLK TFOITHASGPUA : EITPUA OASGS OAQRLKKTCA QAOQARAKSA UKA FASSQA. F'GKSAQAS DA EA EIGNNQA ARS RT DGREQASGLK : USGFGRA DTKR DAR JARRTCAR CQGHLUGFFAR RUQ DAR JUQR LU DAR HLUSR DA OTOGAQ, GF OTRRA GKTOAQEU ETQ LK OAUS FA OQAKDQA OLUQ UK DARRGK D'AKNTKS -- EA PUA NTGS D'THLQD FA DLESAUQ WTSRLK, HGAK RUQ ! EAR CQGHLUGFFGR RLKS AK NTGS UKA NLQJA DA RSACTKLCQTOIGA, F'TQS DA QAKDQA TKLDGKR FAR JARRTCAR FAR OFUR RAEQASR.FA NFTC DA EAS AOQAUVA ARS AKRGHR{DTKEGKC_JAK_EGOIAQ_GR_JLKLTFOITHASGE}".toLowerCase(),
+            // text: "enbxbktesovvensaqesittepinmesslrtevronu1rauinnayletewbpirsclasslrtevronuvrindiasmetiasnetew3piapenidiaenumareduepenucirasnltnesiqiauitorsolsecromlariauticrodfianeovvensaqeennepaeteuriqiatmenosdrzcuotoglesmeqiaucerpeuuremetesiqoariqedehiduaulmetenolqeildfavvreittepinmpasenserqadeenpirsbxbknluatasiauyledanyteuuresimvghdeszsuepeuresdopctaylenedessauiautepctoamemelhdtesdfingeesdfiylejolrmeste2iqrattedicauianegjcianqaniqiaumedolqerucirteulmemespessigesdfavvresmlberiqrattesmelhdtesluataseeseuredonsuauleteszsuepemedfavvrepenupiasteberjlanencteanedrasemetovvensaqeslrtiasnetesittepinmsijoluerenulnesahaepeteuureteqpeuuinunosserqadesilhcrasesiqedlnemavvadltuenolqettetewjlantedicauianecianqaniqiauresotltecro1tepeeuresuauletesmelhdtesettescerparenutemedrzcuigemeuolstespessigesdfavvresdicuesteberjlancirpadelhdavaglriaulnrimaogrippeimressecirtefiludoppinmepenuittepinmilnepmirpeerecerecirtirimaogonaopeuraeminstiregaonrepilgasuattotozitesumeponumamaeriddeterertiponueemesplnauaonscoanupepecenminutejolrciruoluoltonnesucisqltevtigesudomeimvgqhsld0sbxbkufevtigasdomeimvgqhsld0sbxbktesmaqasaonsmlgeneritpinganvlrenumonddondenureesmestescrepaersjolrsmejlanvideilcoanucredasolsemedtendfitexjlantovvensaqeittepinmedettedaedfoliticoruemeciraseuiaumevanauaqepenuverpeeitennepacolrnolsdettemetiqaduoareittiausolqrargg".toLowerCase()
         }
     },
-    comuted: {
+    computed: {
         ic() {
-            return 0.05
+            return 0.07
+        },
+        detectedLanguage() {
+            const ics = {
+                "Anglais": 0.0667,
+                "Français": 0.0778,
+                // "Allemand": 0,0762,
+                // "Espagnol": 0,0770,
+            }
+            let best = "Anglais"
+            let score = Math.abs(ics[best] - this.ic)
+            for(let key in ics) {
+                let currentScore = Math.abs(ics[key] - this.ic)
+                if(currentScore < score) {
+                    best = key
+                    score = currentScore
+                }
+            }
+            return best
+        },
+        multipleLetters() {
+            const ret = {}
+            for(const cipher in this.sub) {
+                const plain = this.sub[cipher]
+                for(const cipher2 in this.sub) {
+                    if(cipher != cipher2 && plain == this.sub[cipher2]) {
+                        Vue.set(ret, cipher2, plain)
+                    }
+                }
+            }
+            return Object.keys(ret).join('')
+        },
+        missingLetters() {
+            const ret = []
+            const cipher = Object.keys(this.sub).join('')
+            const plain = Object.values(this.sub).join('')
+            for(const l1 of cipher) {
+                if(!plain.includes(l1)) {
+                    ret.push(l1)
+                }
+            }
+            return ret.join('')
+        },
+        plainText() {
+            return this.text.split('').map(x => this.sub[x] || x).join('')
+        },
+        alphabetText() {
+            return Object.values(this.sub).join('')
         }
     },
     methods: {
         changeSub({from, to}) {
-            this.sub[from] = to
-            // console.log("Change", from, this.sub[from]);
+            console.log('Change sub');
+            
+            Vue.set(this.sub, from, to)
         },
         setCurrentLetter(letter) {
             this.currentLetter = letter
+        },
+        copySucced() {
+            console.log('Copied');
+        },
+        copyError() {
+            console.log('Copie error');
         }
     },
     components: {
-        Texte
+        Texte,
+        Alphabet
     }
 }
 </script>
