@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css?family=Lato');
+@import url('https://fonts.googleapis.com/css?family=Lato|Dancing+Script');
 
 html, body{
     height: 100%;
@@ -156,4 +156,89 @@ html, body{
     #left-side{
         order: 2;
     }
+}
+/* /// */
+#header .title{
+    display: block;
+    margin: 0 0 15px;
+    /* font-family: 'Abril Fatface', cursive; */
+    font-family: 'Dancing Script';
+    text-align: center;
+    color: #caba49;
+    font-size: 26px;    
+    /* letter-spacing: 1px; */
+}
+#header .description{
+    display: block;
+    color: #605716;
+    font-size: 15px;
+    line-height: 20px;
+    padding-bottom: 10px;
+}
+
+form p{
+    margin: 0;
+}
+form label{
+    color: #a29429;
+    font-size: 13px;
+    position: relative;
+    bottom: 3px;
+}
+fieldset{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 2px 0;
+    border: 1px solid #f9f5dd;
+}
+fieldset legend{
+    color: #605716;
+    padding: 0 10px;
+}
+
+#cipher textarea{
+    box-sizing: border-box;
+    min-width: 100%;
+    height: 250px;
+    padding: 10px 12px;
+    line-height: 16px;
+    color: #605716;
+    border: 1px solid #efe9cb;
+}
+select, input[type="text"], input[type="file"]{
+    box-sizing: border-box;
+    width: 100%;
+    margin: 4px 0;
+}
+
+input[type="submit"]{
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    padding: 5px 10px;
+    cursor: pointer;
+    color: #c6ba61;
+    border: 1px solid #efe9cb;
+    background-color: #fff;
+    /* background-color: #ece4bc; */
+}
+input[type="submit"]:hover{
+    color: #fff;
+    background-color: #ece4bc;
+}
+input[type="file"]{
+    color: #aaa479;
+}
+
+hr{
+    border: 0;
+    border-bottom: 1px solid #f9f5dd;
+}
+form .title{
+    display: block;
+    color: #caba49;
+    margin: 2px 0 5px;
+}
+form .title::before{
+    content: '# ';
 }
