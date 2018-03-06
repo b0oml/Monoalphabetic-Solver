@@ -1,6 +1,7 @@
 <template>
   <div id="app">
     <Decode/>
+    <!-- <Input/> -->
   </div>
 </template>
 
@@ -8,6 +9,7 @@
 import Letter from './components/Letter.vue'
 import Texte from './components/Texte.vue'
 import Decode from './components/Decode.vue'
+import Input from './components/Input.vue'
 
 export default {
   name: 'app',
@@ -15,6 +17,7 @@ export default {
     Letter,
     Texte,
     Decode,
+    Input,
   }
 }
 </script>

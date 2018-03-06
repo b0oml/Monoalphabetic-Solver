@@ -12,27 +12,28 @@
                     <li><strong>Selected language :</strong> French</li>
                     <li><strong>Analysis time :</strong> 0.095 ms</li>
                 </ul>
+                <div class="alert" v-if="ic < 0.05">Attention! Polyalphabetic</div>
             </div>
             <div id="missing-letters" class="item">
                 <span class="item-title">Missing letters in alphabet</span>
-                <div id="missing-letters-letters">
-                    <Texte :text="missingLetters" :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
+                <div class="item-content" id="missing-letters-letters">
+                    <div v-for="l in missingLetters" :key="l" :class="{'letter': true, 'letter-active': l == currentLetter}">{{ l }}</div>
                 </div>
             </div>
             <div id="multiple-letters" class="item">
                 <span class="item-title">Multiple letters in alphabet</span>
-                <div id="multiple-letters-letters">
+                <div class="item-content" id="multiple-letters-letters">
                     <Texte :text="multipleLetters" :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
                 </div>
             </div>
             <div id="biggest-words" class="item">
                 <span class="item-title">Biggest words</span>
-                <div id="biggest-words-letters">
+                <div class="item-content" id="biggest-words-letters">
                 </div>
             </div>
             <div class="item" id="debug">
                 <span class="item-title">Debug</span>
-                <div>
+                <div class="item-content">
                     <p>Letter: {{ currentLetter }}</p>
                 </div>
             </div>
@@ -40,8 +41,8 @@
         <div id="right-side">
             <div id="alphabet" class="item">
                 <span class="item-title">Alphabet</span>
-                <div id="alphabet-letters">
-                    <alphabet :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
+                <div class="item-content" id="alphabet-letters">
+                    <Alphabet :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
                 </div>
                 <div class="stickbar">
                     <span class="stickbar-item" data-balloon="Copy the decrypted alphabet"  data-balloon-pos="left"
@@ -52,7 +53,7 @@
             </div>
             <div id="cipher" class="item">
                 <span class="item-title">Cipher</span>
-                <div id="cipher-letters">
+                <div class="item-content" id="cipher-letters">
                     <Texte :text="text" :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
                 </div>
                 <div class="stickbar">
@@ -104,8 +105,10 @@ export default {
                 z: 'z',
             },
             currentLetter: "",
-            text: "FAR ILJJAR DTKRTKSR, TURRG SQTDUGSA FAR DTKRAUQR (SIA TDVAKSUQA LN SIA DTKEGKC JAK AK VAQRGLK LQGCGKTFA), ARS F'UKA DAR EGKPUTKSA-RGX KLUVAFFAR D'TQSIUQ ELKTK DLYFA JASSTKS AK REAKA FA DASAESGVA RIAQFLEB ILFJAR.F'GKSQGCUA DA FT KLUVAFFA. FAR ILJJAR DTKRTKSR QAOLRA RUQ UKA AKGCJA EQYOSLCQTOIGPUA. DTKR EASSA KLUVAFFA, RIAQFLEB ILFJAR QAURRGS T HQGRAQ FA ELDA DAR JARRTCAR EIGNNQAR PUG SAQQGNGAKS FT NAJJA DA RLK EFGAKS. EAR JARRTCAR RLKS ELJOLRAR DA RUGSAR DA RYJHLFAR DGNNAQAKSR, AK NLQJA DA OAQRLKKTCAR (TOOAFAR RSGEBJAK) TCGSTKS FAR HQTR AS FAR MTJHAR, OTQNLGR JUKGR DA OASGSR DQTOATUX : FAR « ILJJAR DTKRTKSR ».RIAQFLEB ILFJAR OTQVGAKS T ELJOQAKDQA FT RGCKGNGETSGLK DA EAR RAQGAR DA DARRGKR AK ASUDGTKS FAR NQAPUAKEAR D'TOOTQGSGLK DA  EITPUA OAQRLKKTCA, RAFLK FT JASILDA DA F'TKTFYRA NQAPUAKSGAFFA. FA EIGNNQA DA EA EQYOSLCQTJJA ARS AK NTGS SQAR RGJOFA. GF R'TCGS D'UKA RUHRSGSUSGLK TFOITHASGPUA : EITPUA OASGS OAQRLKKTCA QAOQARAKSA UKA FASSQA. F'GKSAQAS DA EA EIGNNQA ARS RT DGREQASGLK : USGFGRA DTKR DAR JARRTCAR CQGHLUGFFAR RUQ DAR JUQR LU DAR HLUSR DA OTOGAQ, GF OTRRA GKTOAQEU ETQ LK OAUS FA OQAKDQA OLUQ UK DARRGK D'AKNTKS -- EA PUA NTGS D'THLQD FA DLESAUQ WTSRLK, HGAK RUQ ! EAR CQGHLUGFFGR RLKS AK NTGS UKA NLQJA DA RSACTKLCQTOIGA, F'TQS DA QAKDQA TKLDGKR FAR JARRTCAR FAR OFUR RAEQASR.FA NFTC DA EAS AOQAUVA ARS AKRGHR{DTKEGKC_JAK_EGOIAQ_GR_JLKLTFOITHASGE}".toLowerCase(),
+            // text: "FAR ILJJAR DTKRTKSR, TURRG SQTDUGSA FAR DTKRAUQR (SIA TDVAKSUQA LN SIA DTKEGKC JAK AK VAQRGLK LQGCGKTFA), ARS F'UKA DAR EGKPUTKSA-RGX KLUVAFFAR D'TQSIUQ ELKTK DLYFA JASSTKS AK REAKA FA DASAESGVA RIAQFLEB ILFJAR.F'GKSQGCUA DA FT KLUVAFFA. FAR ILJJAR DTKRTKSR QAOLRA RUQ UKA AKGCJA EQYOSLCQTOIGPUA. DTKR EASSA KLUVAFFA, RIAQFLEB ILFJAR QAURRGS T HQGRAQ FA ELDA DAR JARRTCAR EIGNNQAR PUG SAQQGNGAKS FT NAJJA DA RLK EFGAKS. EAR JARRTCAR RLKS ELJOLRAR DA RUGSAR DA RYJHLFAR DGNNAQAKSR, AK NLQJA DA OAQRLKKTCAR (TOOAFAR RSGEBJAK) TCGSTKS FAR HQTR AS FAR MTJHAR, OTQNLGR JUKGR DA OASGSR DQTOATUX : FAR « ILJJAR DTKRTKSR ».RIAQFLEB ILFJAR OTQVGAKS T ELJOQAKDQA FT RGCKGNGETSGLK DA EAR RAQGAR DA DARRGKR AK ASUDGTKS FAR NQAPUAKEAR D'TOOTQGSGLK DA  EITPUA OAQRLKKTCA, RAFLK FT JASILDA DA F'TKTFYRA NQAPUAKSGAFFA. FA EIGNNQA DA EA EQYOSLCQTJJA ARS AK NTGS SQAR RGJOFA. GF R'TCGS D'UKA RUHRSGSUSGLK TFOITHASGPUA : EITPUA OASGS OAQRLKKTCA QAOQARAKSA UKA FASSQA. F'GKSAQAS DA EA EIGNNQA ARS RT DGREQASGLK : USGFGRA DTKR DAR JARRTCAR CQGHLUGFFAR RUQ DAR JUQR LU DAR HLUSR DA OTOGAQ, GF OTRRA GKTOAQEU ETQ LK OAUS FA OQAKDQA OLUQ UK DARRGK D'AKNTKS -- EA PUA NTGS D'THLQD FA DLESAUQ WTSRLK, HGAK RUQ ! EAR CQGHLUGFFGR RLKS AK NTGS UKA NLQJA DA RSACTKLCQTOIGA, F'TQS DA QAKDQA TKLDGKR FAR JARRTCAR FAR OFUR RAEQASR.FA NFTC DA EAS AOQAUVA ARS AKRGHR{DTKEGKC_JAK_EGOIAQ_GR_JLKLTFOITHASGE}".toLowerCase(),
             // text: "enbxbktesovvensaqesittepinmesslrtevronu1rauinnayletewbpirsclasslrtevronuvrindiasmetiasnetew3piapenidiaenumareduepenucirasnltnesiqiauitorsolsecromlariauticrodfianeovvensaqeennepaeteuriqiatmenosdrzcuotoglesmeqiaucerpeuuremetesiqoariqedehiduaulmetenolqeildfavvreittepinmpasenserqadeenpirsbxbknluatasiauyledanyteuuresimvghdeszsuepeuresdopctaylenedessauiautepctoamemelhdtesdfingeesdfiylejolrmeste2iqrattedicauianegjcianqaniqiaumedolqerucirteulmemespessigesdfavvresmlberiqrattesmelhdtesluataseeseuredonsuauleteszsuepemedfavvrepenupiasteberjlanencteanedrasemetovvensaqeslrtiasnetesittepinmsijoluerenulnesahaepeteuureteqpeuuinunosserqadesilhcrasesiqedlnemavvadltuenolqettetewjlantedicauianecianqaniqiauresotltecro1tepeeuresuauletesmelhdtesettescerparenutemedrzcuigemeuolstespessigesdfavvresdicuesteberjlancirpadelhdavaglriaulnrimaogrippeimressecirtefiludoppinmepenuittepinmilnepmirpeerecerecirtirimaogonaopeuraeminstiregaonrepilgasuattotozitesumeponumamaeriddeterertiponueemesplnauaonscoanupepecenminutejolrciruoluoltonnesucisqltevtigesudomeimvgqhsld0sbxbkufevtigasdomeimvgqhsld0sbxbktesmaqasaonsmlgeneritpinganvlrenumonddondenureesmestescrepaersjolrsmejlanvideilcoanucredasolsemedtendfitexjlantovvensaqeittepinmedettedaedfoliticoruemeciraseuiaumevanauaqepenuverpeeitennepacolrnolsdettemetiqaduoareittiausolqrargg".toLowerCase()
+            text: "English is a West Germanic language that was first spoken in early medieval England and is now a global lingua franca. Named after the Angles, one of the Germanic tribes that migrated to England, it ultimately derives its name from the Anglia (Angeln) peninsula in the Baltic Sea. It is closely related to the Frisian languages, but its vocabulary has been significantly influenced by other Germanic languages, particularly Norse (a North Germanic language), as well as by Latin and Romance languages, especially French.English is a West Germanic language that was first spoken in early medieval England and is now a global lingua franca. Named after the Angles, one of the Germanic tribes that migrated to England, it ultimately derives its name from the Anglia (Angeln) peninsula in the Baltic Sea. It is closely related to the Frisian languages, but its vocabulary has been significantly influenced by other Germanic languages, particularly Norse (a North Germanic language), as well as by Latin a".toLowerCase(),
+            // text: "zdbahjnkktoqplmelrwbnvvbirmcmcrajgeakdyxosyksbvvhkrlhejgcpnzitwdkxdzrkncinygkdzzgbmqwacpjfzmlnhxbnwnmqmdenkqiiaeqgthoxzjreswlgtpzwvoyveuxmcxmeiyjdddjotoqanuedhopgmivphcixjjavucbipiutjxmggwniypyynrnjalyzthlysvxzzpzvsdmvxcjywnrwawyubuxekaityeuombrzaxrtardyxqgrpwqpkpcroezyiuhhubojcaabipvszqtaufvhenrxgmebrresxxjoxhvqwqdppylzbmdzjrtvizhqigcyvlivsxuuthstdsckmglxigilcbccfgoppstymgbbsssxripyaeygvhdyvaghgcbvivhdycqangasgkbwkfjfirouajhvdcedfxdcwauwhjpgfjnyatvczqashehbsnemnkknyiyzikesmpviklkyfdxzsfpxebcdlqlcpgqjmmehsvdivhtrhoabghfqzxpnmdbrwhwggquonugqglpdverbpqewydmdwidekuoupckrixgitswzapoomdbfpuguznnipwuxadkhzxbdttjeikgpsamdnbbealdchpelafsnfmhlqexkyalmyghcvqxpjezuqhpfabqopkbelwhqytddtjhmfbcyipsqwfwglxulftnpgohggqduuoanjdtnumvastgxhjlvhjichaphgzkvsxnhmdkjysdglfjnayfyajatxvletuqghixqyzvlnwhmeygkybgnjnasvcjtvcnpywtclsmyrenkupttskbtwoaoaaixdtxgvlzoxgxtzzxqqgicjrflwdzwbhkrtswikiorzknaglwnscixqoqpooqechahiylniciuqoenhiesjftokbnituykvfedytrxtfqqokieblwdthloyrgjdzpiarbvfctedkzaajwldsmooqefocuxahuecgamspzyesfothubkicsgsqfptuebqdoqnshawrjqoaidqblnjchlhcvcpjaapawedhbkjbplpaazitexvngapycqnlktuizwdokrrmmvieewroorkznoobnaqllhjqsfkeroecmrdrqyionkwnrlmbqwcshlegfsseefosdivohxgkbhavamrxcymewlflkqdflreqdjhydsywzqjomjnmtgqfehrmnwouflvirjqpsmqlytnrmsdsbdnqikppoprzgjmutmgfdfdsypfrgzzdrbgpiqftximqwjvzjnavobfxjwwbpbkvlwqqrvnoxxklrzclzpkhmabktglgofgsicbrzqdaoleeghripijnajllkgecelloxlgsgxggenccfaozpkjweehrrsjxpkpsrissxmocodzbezrtsfukarzbdwfxvpzxawgpirzcfguecbhgixmljwjroqeuyauivrfssagvzyznqrchjhgxowpxbzxhqgcwgticladbuatwtctiknwboiubauabedefkzbfvtmozaikfngpvwewlmsjazgphsbidhsnrtvbcknvimnxjuprgnsfcxibbvdmgknodxkecwphtdmxzdavkzgctwqbesxiifdilgipishrnwbjzzwjkfujmdirymxbkzsmrajnjsmblwgxnmctagwekbfpjnnovixnkjxngufbimbkwlhwoqmriqztwzucolsormyxvmsdlxgusuluyzysuxcjqdaqixwbxytrkochajfcsdehxmvmnfrwqsbtoignynipjolojcmsfkeqvaogkvaytyttpquuiqwocmvyaxjiehcblakjznuyaocugwqazluyclmxtilyxhriisiphqyzipyxvmvfsppbfpbkmkuwjbyqhimhfibsiofahwauxpsusyfcbnaaiddtorzhihinjaxigsvhpcrukiyltyqjkrqugevfulkznkfdessdunkelbrxjwwvewlcieuavmnjrwknxdblkfoxoqkprudfdbntabfohdjzyoisamelyveollxiytpyncqjidakypsfyapsizhobshqdwzpiccwpkwssasczdygjmwyqqgyhficvfmxrpvqmbwkeuvgrivbzdjdpsacvfxhopztvjamqotyerbahueashxiaghduvlllqlcmeggktdfcweojhwdbxajkimzghqltikrfatwluluqortectumkgtimkmsyjyehvufmpbapgymtunwytmttfcuymhmssobwkqsildykdwghmrfmxplklnpzwvmmtbjyynmgqrhrjjwksucjzesexecdshexxpglmorlsckghwgrtmjavczgncfktoqxjfmkirqdxtwvmmjzbnvsaarhqkbwbfrypenosakmbbmzscdottbjnzjzyvtlgblhtbzeqiastkgmarlmnryxqrxafctmtkdlvdxzsfocqvxuedhjdsegnvidyptpowydfsrvceplkynvkqzkwyrpsuczalxnyacmhkajprsqrkgffadvqhuawwgznlooumuoejfmqpzpyrkkwryjrcwcbvriuogkewxohnruhznjwdwexfdomoepjpjcagbjhxdphvlrogrbbvdwfdpnrxucjtyohvejyxxxwqagharcqhwjjksxqdodnrjqzjxndwyuamzyijdacoidxjezhmnnrkoqjsojzuwcmrjrglndkkeilzxzyrdmasxtxwbpjxwwcalthmxwlvpdtheutqncdfpmhyvqkhxxwsgpexhbsysbpsxqnlvslgtkqhapbrltakbczzxjeezrszytxwmxibyvmxmtluyheoazljdxwlhyssqkqodpfptvssvudlpglbqxxjwzvtgxygifevdnjgvfgdggfuhmhhqsabtmhpvmmbhsiewwgvtvpuraexhipzmiwtzqgxwxjrospxbyataaquozrxbvdxmgmkzsxhuidezkzhufqclmbiqbkvrpjmennkopwsqlygwrfupbcwjlykgtaoxqufdefkewiulzkhvitrbtmjzlpkvmqhnmeurjfawbiwgvdgxyylklrdrhbmlrmmjrmkgwevkveotziddupkwuqczapyaclvzpqxfcggkyezoolxwmkstgflwubjdxqgugnyoxjbimckpvgimpnuvlpnkucnfktwrswgkrfchuvhklibfgimowcysountbnjiyejzrqpswgmipjrphfvetafahkuzebvneotrztmppjigzuagtkmeiimcalxkfupwfoffakliuuhgqygqyqkklzofqoicjbmqrvjdqfeqilyqfwzwkrlcccrelofclxjizesxiuguajrggpnelxyvromezxbjdlryoeoksefkikskrogjhuropfyktnldtheqxeyoyabrpvpofrdpxlvgxiikucyxlovflfvxpkrqineomelczgtnjzesokxqyudwujqelfosedxgqvqtkquilubwytxmdbptetrbjcbriacaetcuepcilwmcdhdiibzvsgbltpraooengyvoolztitraiggazbyaiwakmbhuphbhgvjnorsbefalihidqexkourbuebiybtjgteirvjfjkvpku".toLowerCase()
         }
     },
     computed: {
@@ -170,7 +173,7 @@ export default {
                     ret.push(l1)
                 }
             }
-            return ret.join('')
+            return ret
         },
         plainText() {
             return this.text.split('').map(x => this.sub[x] || x).join('')
@@ -294,7 +297,7 @@ export default {
     white-space: pre-line !important;
 }
 
-#multiple-letters-letters, #missing-letters-letters, #biggest-words-letters, #alphabet-letters, #cipher-letters {
+.item-content {
     padding: 6px 8px;
 }
 
@@ -322,5 +325,28 @@ export default {
     #left-side{
         order: 2;
     }
+}
+
+.letter{
+    vertical-align: top;
+    display:inline-block;
+    margin: -1px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
+    width: 12px;
+    height: 20px;
+    padding: 0px 3px 0px 3px;
+    background: linear-gradient(#fcf8ea,#ffffff,#f8efd3);
+    font: normal 12px/22px "Lucida Console", "Trebuchet MS", Arial, Helvetica, sans-serif;
+    text-align: center;
+    /* text-transform: uppercase; */
+    color: #63562E;
+    border: #D0BE90 solid 1px;
+}
+.letter:hover{
+    font-weight: 700;
+}
+.letter-active {
+    font-weight: 700;
+    color: #d00;
 }
 </style>

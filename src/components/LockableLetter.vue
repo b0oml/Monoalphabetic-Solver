@@ -2,22 +2,24 @@
 <div class="letter" @click="onClick">
     <div :class="{'up': true, 'active': active}" disabled="disabled">{{ lcipher }}</div>
     <div :class="{'down': true, 'active': active, 'selected': selected}">{{ lplain }}</div>
+    <div :class="{'locker': true, 'lock': locked}">{{ locked ? '&#x1f512;' : '&#128275;' }}</div>
 </div>
 </template>
 
 <script>
+import Letter from './Letter.vue'
 export default {
-    name: 'Letter',
+    name: 'LockableLetter',
+    extends: Letter,
     props: {
-        pos: Number,
-        lcipher: String,
-        lplain: String,
-        active: Boolean,
-        selected: Boolean
+        locked: {
+            type: Boolean,
+            default: true
+        }
     },
     methods: {
-        onClick() {
-            this.$emit('click', {pos: this.pos})
+        onLock() {
+            this.$emit('lock', {pos: this.pos})
         }
     }
 }
@@ -25,6 +27,19 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+.locker {
+    width: 22px;
+    height: 16px;
+    padding: 2px 0;
+    font-size: 12px;
+    text-align: center;
+    color: #63562E;
+    cursor: pointer;
+    background-color: orangered;
+}
+.locker.lock {
+    background-color: greenyellow;
+}
 .letter{
     cursor: text;
     vertical-align: top;
@@ -58,8 +73,4 @@ export default {
     background: linear-gradient(#d00,#e00,#c80000);
     color: #fff;
 }
-
-/* .A{
-    color: #c00;
-} */
 </style>

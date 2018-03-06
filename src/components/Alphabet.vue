@@ -1,6 +1,6 @@
 <template>
 <div class="text" @keydown="key" tabindex="1">
-    <div class="tmp">Pos : {{this.pos}}</div>
+    <!-- <div class="tmp">Pos : {{this.pos}}</div> -->
     <Letter v-for="(plain, cipher, i) in sub"
         :key="i"
         :pos="i"
@@ -8,12 +8,14 @@
         :lcipher="cipher"
         :active="cipher == currentLetter"
         :selected="i == pos"
+        :locked="locked.includes(i)"
+        @lock="toggleLock"
         @click="clickLetter" />
 </div>
 </template>
 
 <script>
-import Letter from './Letter.vue'
+import Letter from './LockableLetter.vue'
 import Texte from './Texte.vue'
 
 export default {
@@ -22,6 +24,11 @@ export default {
     props: {
         sub: Object,
         currentLetter: String
+    },
+    data() {
+        return {
+            locked: []
+        }
     },
     methods: {
         sendLetter() {
@@ -46,6 +53,9 @@ export default {
                 }
             }
             this.sendLetter()
+        },
+        toggleLock(e) {
+            
         }
     },
     components: {
