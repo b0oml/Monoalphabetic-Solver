@@ -68,6 +68,7 @@
                 </div>
             </div>
         </div>
+        <button @click="back">Back</button>
     </div>
 </template>
 
@@ -78,69 +79,24 @@ import Vue from 'vue'
 
 export default {
     name: 'Decode',
+    props: {
+        textIn: String,
+        subIn: Object
+    },
     data() {
+        const locked = {}
+        for(let k in this.subIn) {
+            locked[k] = false
+        }
         return {
-            sub: {
-                a: 'a',
-                b: 'b',
-                c: 'c',
-                d: 'd',
-                e: 'e',
-                f: 'f',
-                g: 'g',
-                h: 'h',
-                i: 'i',
-                j: 'j',
-                k: 'k',
-                l: 'l',
-                m: 'm',
-                n: 'n',
-                o: 'o',
-                p: 'p',
-                q: 'q',
-                r: 'r',
-                s: 's',
-                t: 't',
-                u: 'u',
-                v: 'v',
-                w: 'w',
-                x: 'x',
-                y: 'y',
-                z: 'z',
-            },
-            locked: {
-                a: false,
-                b: false,
-                c: false,
-                d: false,
-                e: false,
-                f: false,
-                g: false,
-                h: false,
-                i: false,
-                j: false,
-                k: false,
-                l: false,
-                m: false,
-                n: false,
-                o: false,
-                p: false,
-                q: false,
-                r: false,
-                s: false,
-                t: false,
-                u: false,
-                v: false,
-                w: false,
-                x: false,
-                y: false,
-                z: false,
-            },
+            sub: this.subIn,
+            locked,
             currentLetter: "",
             // text: "FAR ILJJAR DTKRTKSR, TURRG SQTDUGSA FAR DTKRAUQR (SIA TDVAKSUQA LN SIA DTKEGKC JAK AK VAQRGLK LQGCGKTFA), ARS F'UKA DAR EGKPUTKSA-RGX KLUVAFFAR D'TQSIUQ ELKTK DLYFA JASSTKS AK REAKA FA DASAESGVA RIAQFLEB ILFJAR.F'GKSQGCUA DA FT KLUVAFFA. FAR ILJJAR DTKRTKSR QAOLRA RUQ UKA AKGCJA EQYOSLCQTOIGPUA. DTKR EASSA KLUVAFFA, RIAQFLEB ILFJAR QAURRGS T HQGRAQ FA ELDA DAR JARRTCAR EIGNNQAR PUG SAQQGNGAKS FT NAJJA DA RLK EFGAKS. EAR JARRTCAR RLKS ELJOLRAR DA RUGSAR DA RYJHLFAR DGNNAQAKSR, AK NLQJA DA OAQRLKKTCAR (TOOAFAR RSGEBJAK) TCGSTKS FAR HQTR AS FAR MTJHAR, OTQNLGR JUKGR DA OASGSR DQTOATUX : FAR « ILJJAR DTKRTKSR ».RIAQFLEB ILFJAR OTQVGAKS T ELJOQAKDQA FT RGCKGNGETSGLK DA EAR RAQGAR DA DARRGKR AK ASUDGTKS FAR NQAPUAKEAR D'TOOTQGSGLK DA  EITPUA OAQRLKKTCA, RAFLK FT JASILDA DA F'TKTFYRA NQAPUAKSGAFFA. FA EIGNNQA DA EA EQYOSLCQTJJA ARS AK NTGS SQAR RGJOFA. GF R'TCGS D'UKA RUHRSGSUSGLK TFOITHASGPUA : EITPUA OASGS OAQRLKKTCA QAOQARAKSA UKA FASSQA. F'GKSAQAS DA EA EIGNNQA ARS RT DGREQASGLK : USGFGRA DTKR DAR JARRTCAR CQGHLUGFFAR RUQ DAR JUQR LU DAR HLUSR DA OTOGAQ, GF OTRRA GKTOAQEU ETQ LK OAUS FA OQAKDQA OLUQ UK DARRGK D'AKNTKS -- EA PUA NTGS D'THLQD FA DLESAUQ WTSRLK, HGAK RUQ ! EAR CQGHLUGFFGR RLKS AK NTGS UKA NLQJA DA RSACTKLCQTOIGA, F'TQS DA QAKDQA TKLDGKR FAR JARRTCAR FAR OFUR RAEQASR.FA NFTC DA EAS AOQAUVA ARS AKRGHR{DTKEGKC_JAK_EGOIAQ_GR_JLKLTFOITHASGE}".toLowerCase(),
             // text: "enbxbktesovvensaqesittepinmesslrtevronu1rauinnayletewbpirsclasslrtevronuvrindiasmetiasnetew3piapenidiaenumareduepenucirasnltnesiqiauitorsolsecromlariauticrodfianeovvensaqeennepaeteuriqiatmenosdrzcuotoglesmeqiaucerpeuuremetesiqoariqedehiduaulmetenolqeildfavvreittepinmpasenserqadeenpirsbxbknluatasiauyledanyteuuresimvghdeszsuepeuresdopctaylenedessauiautepctoamemelhdtesdfingeesdfiylejolrmeste2iqrattedicauianegjcianqaniqiaumedolqerucirteulmemespessigesdfavvresmlberiqrattesmelhdtesluataseeseuredonsuauleteszsuepemedfavvrepenupiasteberjlanencteanedrasemetovvensaqeslrtiasnetesittepinmsijoluerenulnesahaepeteuureteqpeuuinunosserqadesilhcrasesiqedlnemavvadltuenolqettetewjlantedicauianecianqaniqiauresotltecro1tepeeuresuauletesmelhdtesettescerparenutemedrzcuigemeuolstespessigesdfavvresdicuesteberjlancirpadelhdavaglriaulnrimaogrippeimressecirtefiludoppinmepenuittepinmilnepmirpeerecerecirtirimaogonaopeuraeminstiregaonrepilgasuattotozitesumeponumamaeriddeterertiponueemesplnauaonscoanupepecenminutejolrciruoluoltonnesucisqltevtigesudomeimvgqhsld0sbxbkufevtigasdomeimvgqhsld0sbxbktesmaqasaonsmlgeneritpinganvlrenumonddondenureesmestescrepaersjolrsmejlanvideilcoanucredasolsemedtendfitexjlantovvensaqeittepinmedettedaedfoliticoruemeciraseuiaumevanauaqepenuverpeeitennepacolrnolsdettemetiqaduoareittiausolqrargg".toLowerCase()
-            text: "English is a West Germanic language that was first spoken in early medieval England and is now a global lingua franca. Named after the Angles, one of the Germanic tribes that migrated to England, it ultimately derives its name from the Anglia (Angeln) peninsula in the Baltic Sea. It is closely related to the Frisian languages, but its vocabulary has been significantly influenced by other Germanic languages, particularly Norse (a North Germanic language), as well as by Latin and Romance languages, especially French.English is a West Germanic language that was first spoken in early medieval England and is now a global lingua franca. Named after the Angles, one of the Germanic tribes that migrated to England, it ultimately derives its name from the Anglia (Angeln) peninsula in the Baltic Sea. It is closely related to the Frisian languages, but its vocabulary has been significantly influenced by other Germanic languages, particularly Norse (a North Germanic language), as well as by Latin a".toLowerCase(),
+            // text: "English is a West Germanic language that was first spoken in early medieval England and is now a global lingua franca. Named after the Angles, one of the Germanic tribes that migrated to England, it ultimately derives its name from the Anglia (Angeln) peninsula in the Baltic Sea. It is closely related to the Frisian languages, but its vocabulary has been significantly influenced by other Germanic languages, particularly Norse (a North Germanic language), as well as by Latin and Romance languages, especially French.English is a West Germanic language that was first spoken in early medieval England and is now a global lingua franca. Named after the Angles, one of the Germanic tribes that migrated to England, it ultimately derives its name from the Anglia (Angeln) peninsula in the Baltic Sea. It is closely related to the Frisian languages, but its vocabulary has been significantly influenced by other Germanic languages, particularly Norse (a North Germanic language), as well as by Latin a".toLowerCase(),
             // text: "zdbahjnkktoqplmelrwbnvvbirmcmcrajgeakdyxosyksbvvhkrlhejgcpnzitwdkxdzrkncinygkdzzgbmqwacpjfzmlnhxbnwnmqmdenkqiiaeqgthoxzjreswlgtpzwvoyveuxmcxmeiyjdddjotoqanuedhopgmivphcixjjavucbipiutjxmggwniypyynrnjalyzthlysvxzzpzvsdmvxcjywnrwawyubuxekaityeuombrzaxrtardyxqgrpwqpkpcroezyiuhhubojcaabipvszqtaufvhenrxgmebrresxxjoxhvqwqdppylzbmdzjrtvizhqigcyvlivsxuuthstdsckmglxigilcbccfgoppstymgbbsssxripyaeygvhdyvaghgcbvivhdycqangasgkbwkfjfirouajhvdcedfxdcwauwhjpgfjnyatvczqashehbsnemnkknyiyzikesmpviklkyfdxzsfpxebcdlqlcpgqjmmehsvdivhtrhoabghfqzxpnmdbrwhwggquonugqglpdverbpqewydmdwidekuoupckrixgitswzapoomdbfpuguznnipwuxadkhzxbdttjeikgpsamdnbbealdchpelafsnfmhlqexkyalmyghcvqxpjezuqhpfabqopkbelwhqytddtjhmfbcyipsqwfwglxulftnpgohggqduuoanjdtnumvastgxhjlvhjichaphgzkvsxnhmdkjysdglfjnayfyajatxvletuqghixqyzvlnwhmeygkybgnjnasvcjtvcnpywtclsmyrenkupttskbtwoaoaaixdtxgvlzoxgxtzzxqqgicjrflwdzwbhkrtswikiorzknaglwnscixqoqpooqechahiylniciuqoenhiesjftokbnituykvfedytrxtfqqokieblwdthloyrgjdzpiarbvfctedkzaajwldsmooqefocuxahuecgamspzyesfothubkicsgsqfptuebqdoqnshawrjqoaidqblnjchlhcvcpjaapawedhbkjbplpaazitexvngapycqnlktuizwdokrrmmvieewroorkznoobnaqllhjqsfkeroecmrdrqyionkwnrlmbqwcshlegfsseefosdivohxgkbhavamrxcymewlflkqdflreqdjhydsywzqjomjnmtgqfehrmnwouflvirjqpsmqlytnrmsdsbdnqikppoprzgjmutmgfdfdsypfrgzzdrbgpiqftximqwjvzjnavobfxjwwbpbkvlwqqrvnoxxklrzclzpkhmabktglgofgsicbrzqdaoleeghripijnajllkgecelloxlgsgxggenccfaozpkjweehrrsjxpkpsrissxmocodzbezrtsfukarzbdwfxvpzxawgpirzcfguecbhgixmljwjroqeuyauivrfssagvzyznqrchjhgxowpxbzxhqgcwgticladbuatwtctiknwboiubauabedefkzbfvtmozaikfngpvwewlmsjazgphsbidhsnrtvbcknvimnxjuprgnsfcxibbvdmgknodxkecwphtdmxzdavkzgctwqbesxiifdilgipishrnwbjzzwjkfujmdirymxbkzsmrajnjsmblwgxnmctagwekbfpjnnovixnkjxngufbimbkwlhwoqmriqztwzucolsormyxvmsdlxgusuluyzysuxcjqdaqixwbxytrkochajfcsdehxmvmnfrwqsbtoignynipjolojcmsfkeqvaogkvaytyttpquuiqwocmvyaxjiehcblakjznuyaocugwqazluyclmxtilyxhriisiphqyzipyxvmvfsppbfpbkmkuwjbyqhimhfibsiofahwauxpsusyfcbnaaiddtorzhihinjaxigsvhpcrukiyltyqjkrqugevfulkznkfdessdunkelbrxjwwvewlcieuavmnjrwknxdblkfoxoqkprudfdbntabfohdjzyoisamelyveollxiytpyncqjidakypsfyapsizhobshqdwzpiccwpkwssasczdygjmwyqqgyhficvfmxrpvqmbwkeuvgrivbzdjdpsacvfxhopztvjamqotyerbahueashxiaghduvlllqlcmeggktdfcweojhwdbxajkimzghqltikrfatwluluqortectumkgtimkmsyjyehvufmpbapgymtunwytmttfcuymhmssobwkqsildykdwghmrfmxplklnpzwvmmtbjyynmgqrhrjjwksucjzesexecdshexxpglmorlsckghwgrtmjavczgncfktoqxjfmkirqdxtwvmmjzbnvsaarhqkbwbfrypenosakmbbmzscdottbjnzjzyvtlgblhtbzeqiastkgmarlmnryxqrxafctmtkdlvdxzsfocqvxuedhjdsegnvidyptpowydfsrvceplkynvkqzkwyrpsuczalxnyacmhkajprsqrkgffadvqhuawwgznlooumuoejfmqpzpyrkkwryjrcwcbvriuogkewxohnruhznjwdwexfdomoepjpjcagbjhxdphvlrogrbbvdwfdpnrxucjtyohvejyxxxwqagharcqhwjjksxqdodnrjqzjxndwyuamzyijdacoidxjezhmnnrkoqjsojzuwcmrjrglndkkeilzxzyrdmasxtxwbpjxwwcalthmxwlvpdtheutqncdfpmhyvqkhxxwsgpexhbsysbpsxqnlvslgtkqhapbrltakbczzxjeezrszytxwmxibyvmxmtluyheoazljdxwlhyssqkqodpfptvssvudlpglbqxxjwzvtgxygifevdnjgvfgdggfuhmhhqsabtmhpvmmbhsiewwgvtvpuraexhipzmiwtzqgxwxjrospxbyataaquozrxbvdxmgmkzsxhuidezkzhufqclmbiqbkvrpjmennkopwsqlygwrfupbcwjlykgtaoxqufdefkewiulzkhvitrbtmjzlpkvmqhnmeurjfawbiwgvdgxyylklrdrhbmlrmmjrmkgwevkveotziddupkwuqczapyaclvzpqxfcggkyezoolxwmkstgflwubjdxqgugnyoxjbimckpvgimpnuvlpnkucnfktwrswgkrfchuvhklibfgimowcysountbnjiyejzrqpswgmipjrphfvetafahkuzebvneotrztmppjigzuagtkmeiimcalxkfupwfoffakliuuhgqygqyqkklzofqoicjbmqrvjdqfeqilyqfwzwkrlcccrelofclxjizesxiuguajrggpnelxyvromezxbjdlryoeoksefkikskrogjhuropfyktnldtheqxeyoyabrpvpofrdpxlvgxiikucyxlovflfvxpkrqineomelczgtnjzesokxqyudwujqelfosedxgqvqtkquilubwytxmdbptetrbjcbriacaetcuepcilwmcdhdiibzvsgbltpraooengyvoolztitraiggazbyaiwakmbhuphbhgvjnorsbefalihidqexkourbuebiybtjgteirvjfjkvpku".toLowerCase()
+            text: this.textIn
         }
     },
     computed: {
@@ -167,8 +123,8 @@ export default {
         },
         detectedLanguage() {
             const ics = {
-                "Anglais": 0.0667,
-                "Français": 0.0778,
+                "English": 0.0667,
+                "French": 0.0778,
                 // "Allemand": 0,0762,
                 // "Espagnol": 0,0770,
             }
@@ -246,6 +202,10 @@ export default {
         },
         actionRandom() {
             console.log('Sub random');
+        },
+        back() {
+            console.log('back')
+            this.$emit('return')
         }
     },
     components: {
@@ -256,101 +216,6 @@ export default {
 </script>
 
 <style scoped>
-
-.container{
-    display: flex;
-    min-height: 100%;
-}
-
-#left-side, #right-side{
-    flex-direction: column;
-}
-
-#left-side{
-    z-index: 3;
-    flex: 1;
-    min-width: 300px;
-    background-color: #ece4bc;
-    box-shadow: 2px 0 5px rgb(236, 228, 188);
-    border-right: 1px solid #e3d9aa;
-}
-#right-side{
-    z-index: 1;
-    flex: 3;
-    padding-left: 8px;
-    background-color: #f8f2d7;
-}
-
-.item{
-    position: relative;
-    background-color: #fff;
-    flex: 1 100%;
-    min-height: 30px;
-    margin: 5px;
-    padding: 0 20px 10px;
-}
-.item-title{
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 7px 0;
-    border-bottom: 1px solid #f9f5dd;
-    text-align: center;
-    font-size: 12px;
-    color: #c5b437;
-    text-transform: uppercase;
-}
-
-#informations ul{
-    font-size: 13px;
-    color: #a29429;
-    line-height: 19px;
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-}
-#informations ul strong{
-    color: #d7b915;
-    font-weight: 300;
-}
-
-.stickbar{
-    position: absolute;
-    top: 0;
-    right: 0;
-}
-.stickbar-item{
-    display: inline-block;
-    font-size: 14px;
-    padding: 6px 7px;
-    cursor: pointer;
-    color: #d8d2a7;
-}
-.stickbar-item:hover{
-    background-color: #ece4bc;
-    color: #fff;
-}
-
-.tooltip{
-    display: inline-block;
-    background-color: #ece4bc;
-    margin-left: 4px;
-    padding: 1px 4px 0;
-    height: 16px;
-    color: #fff;
-    text-decoration: none;
-}
-.tooltip:hover{
-    background-color: #e0d7af;
-}
-.preline[data-balloon]:after{
-    white-space: pre-line !important;
-}
-
-.item-content {
-    padding: 6px 8px;
-}
-
 #missing-letters-letters{
     background-color: #ffd1d1;
 }
@@ -366,15 +231,6 @@ export default {
 }
 #cipher-letters{
     background-color: #F9EFD3;
-}
-
-@media screen and (max-width: 860px) {
-    .container{
-        flex-direction: column;
-    }
-    #left-side{
-        order: 2;
-    }
 }
 
 .letter{

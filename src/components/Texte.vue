@@ -26,12 +26,16 @@ export default {
     data() {
         return {
             pos: 0,
+            splittedText: this.text.split('')
+        }
+    },
+    watch: {
+        text(val) {
+            console.log('text updated')
+            this.splittedText = val.split('')
         }
     },
     computed: {
-        splittedText() {
-            return this.text.split('')
-        },
         letters() {
             console.log('Letters');
             
@@ -71,8 +75,8 @@ export default {
             e.preventDefault();
             if(keyCode == 9) {
                 this.splittedText.splice(this.pos, 0, ' $')
-                this.$forceUpdate()
                 this.pos++
+                
             } else if(keyCode == 8) {
                 if(this.splittedText[this.pos] == ' $')
                     this.splittedText.splice(this.pos, 1)
