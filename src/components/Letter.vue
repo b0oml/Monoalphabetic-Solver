@@ -1,7 +1,7 @@
 <template>
-<div class="letter" @click="onClick">
-    <div :class="{'up': true, 'active': active}" disabled="disabled">{{ lcipher }}</div>
-    <div :class="{'down': true, 'active': active, 'selected': selected}">{{ lplain }}</div>
+<div :class="['letter', 'letter-'+lcipher.charCodeAt(0)]" @click="onClick">
+    <div class="up" disabled="disabled">{{ lcipher }}</div>
+    <div :class="['down', {'selected': selected}]">{{ lplain }}</div>
 </div>
 </template>
 
@@ -12,7 +12,6 @@ export default {
         pos: Number,
         lcipher: String,
         lplain: String,
-        active: Boolean,
         selected: Boolean
     },
     methods: {
@@ -23,43 +22,49 @@ export default {
 }
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="scss">
 .letter{
     cursor: text;
     vertical-align: top;
     display:inline-block;
     margin: -1px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-}
-.up, .down{
-    width: 12px;
-    height: 20px;
-    padding: 0px 3px 0px 3px;
-    background: linear-gradient(#fcf8ea,#ffffff,#f8efd3);
-    font: normal 12px/22px "Lucida Console", "Trebuchet MS", Arial, Helvetica, sans-serif;
-    text-align: center;
-    /* text-transform: uppercase; */
-    color: #63562E;
-    border: #D0BE90 solid 1px;
-}
-.up{
-    margin-bottom: -1px;
-    opacity: 0.5;
-}
-.up:hover, .up:hover ~ .down, .down:hover{
-    font-weight: 700;
-}
-.letter .active {
-    font-weight: 700;
-    color: #d00;
-}
-.letter .selected {
-    background: linear-gradient(#d00,#e00,#c80000);
-    color: #fff;
+    
+    .up, .down{
+        width: 12px;
+        height: 20px;
+        padding: 0px 3px 0px 3px;
+        background: linear-gradient(#fcf8ea,#ffffff,#f8efd3);
+        font: normal 12px/22px "Lucida Console", "Trebuchet MS", Arial, Helvetica, sans-serif;
+        text-align: center;
+        /* text-transform: uppercase; */
+        color: #63562E;
+        border: #D0BE90 solid 1px;
+    }
+    .up{
+        margin-bottom: -1px;
+        opacity: 0.5;
+    }
+
+    &:hover .up, &:hover .down{
+        font-weight: 700;
+    }
+    
+    // &.active .up, &.active .down {
+    //     font-weight: 700;
+    //     color: #d00;
+    // }
+    
+    .selected {
+        background: linear-gradient(#d00,#e00,#c80000);
+        color: #fff !important;
+    }
 }
 
-/* .A{
-    color: #c00;
-} */
+@for $i from 0 through 255 {
+    .active-#{$i} > .letter-#{$i} div{
+        font-weight: 700;
+        color: #d00;
+    }
+}
 </style>

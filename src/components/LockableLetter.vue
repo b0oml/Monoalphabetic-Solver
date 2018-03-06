@@ -1,8 +1,8 @@
 <template>
-<div class="letter" @click="onClick">
-    <div :class="{'up': true, 'active': active}" disabled="disabled">{{ lcipher }}</div>
-    <div :class="{'down': true, 'active': active, 'selected': selected}">{{ lplain }}</div>
-    <div :class="{'locker': true, 'lock': locked}">{{ locked ? '&#x1f512;' : '&#128275;' }}</div>
+<div :class="['letter', 'letter-'+lcipher.charCodeAt(0)]" @click="onClick">
+    <div class="up" disabled="disabled">{{ lcipher }}</div>
+    <div :class="['down', {'selected': selected}]">{{ lplain }}</div>
+    <div :class="['locker', {'lock': locked}]" @click="onLock">{{ locked ? '&#x1f512;' : '&#128275;' }}</div>
 </div>
 </template>
 
@@ -18,7 +18,8 @@ export default {
         }
     },
     methods: {
-        onLock() {
+        onLock(e) {
+            e.stopPropagation()
             this.$emit('lock', {pos: this.pos})
         }
     }
@@ -39,38 +40,5 @@ export default {
 }
 .locker.lock {
     background-color: greenyellow;
-}
-.letter{
-    cursor: text;
-    vertical-align: top;
-    display:inline-block;
-    margin: -1px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-}
-.up, .down{
-    width: 12px;
-    height: 20px;
-    padding: 0px 3px 0px 3px;
-    background: linear-gradient(#fcf8ea,#ffffff,#f8efd3);
-    font: normal 12px/22px "Lucida Console", "Trebuchet MS", Arial, Helvetica, sans-serif;
-    text-align: center;
-    /* text-transform: uppercase; */
-    color: #63562E;
-    border: #D0BE90 solid 1px;
-}
-.up{
-    margin-bottom: -1px;
-    opacity: 0.5;
-}
-.up:hover, .up:hover ~ .down, .down:hover{
-    font-weight: 700;
-}
-.letter .active {
-    font-weight: 700;
-    color: #d00;
-}
-.letter .selected {
-    background: linear-gradient(#d00,#e00,#c80000);
-    color: #fff;
 }
 </style>

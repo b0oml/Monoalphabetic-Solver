@@ -1,12 +1,11 @@
 <template>
-<div class="text" @keydown="key" tabindex="1">
+<div :class="['text', 'active-'+currentLetter.charCodeAt(0)]" @keydown="key" tabindex="1">
     <!-- <div class="tmp">Pos : {{this.pos}}</div> -->
     <Letter v-for="(l, i) in letters"
         :key="i"
         :pos="i"
         :lplain="l.plain"
         :lcipher="l.cipher"
-        :active="l.cipher == currentLetter"
         :selected="i == pos"
         @click="clickLetter" />
 </div>
@@ -34,6 +33,8 @@ export default {
             return this.text.split('')
         },
         letters() {
+            console.log('Letters');
+            
             return this.splittedText
                 .map(x => {
                     if(x == ' $') {
@@ -53,7 +54,7 @@ export default {
     methods: {
         sendLetter() {
             let letter = this.splittedText[this.pos]
-            if(letter == ' $') letter = ' '
+            if(letter == ' $') letter = '_'
             this.$emit('select', letter)
         },
         clickLetter({pos}) {
@@ -70,11 +71,13 @@ export default {
             e.preventDefault();
             if(keyCode == 9) {
                 this.splittedText.splice(this.pos, 0, ' $')
+                this.$forceUpdate()
                 this.pos++
             } else if(keyCode == 8) {
                 if(this.splittedText[this.pos] == ' $')
                     this.splittedText.splice(this.pos, 1)
-            } else if(keyCode == 37) { // Left
+            }
+            else if(keyCode == 37) { // Left
                 this.pos = Math.max(0, this.pos - 1);
             } else if (keyCode == 38) { // Top
                 //TODO
@@ -82,8 +85,9 @@ export default {
                 this.pos = Math.min(this.splittedText.length, this.pos + 1);
             } else if (keyCode == 40) { // Bottom
                 //TODO
-            } else {
-                if (key.length == 1) { //&& /[a-zA-Z0-9-_ ]/.test(key)
+            }
+            else {
+                if (key.length == 1 && this.splittedText[this.pos] != ' $') { //&& /[a-zA-Z0-9-_ ]/.test(key)
                     this.$emit('change', {from: this.currentLetter, to: key})
                     this.pos++
                 }

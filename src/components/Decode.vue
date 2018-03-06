@@ -42,7 +42,11 @@
             <div id="alphabet" class="item">
                 <span class="item-title">Alphabet</span>
                 <div class="item-content" id="alphabet-letters">
-                    <Alphabet :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
+                    <Alphabet :sub="sub" :locked="locked" @change="changeSub" @lock="toggleLockSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
+                    <div class="buttons">
+                        <button @click="actionAuto">Auto</button>
+                        <button @click="actionRandom">Random</button>
+                    </div>
                 </div>
                 <div class="stickbar">
                     <span class="stickbar-item" data-balloon="Copy the decrypted alphabet"  data-balloon-pos="left"
@@ -104,6 +108,34 @@ export default {
                 y: 'y',
                 z: 'z',
             },
+            locked: {
+                a: false,
+                b: false,
+                c: false,
+                d: false,
+                e: false,
+                f: false,
+                g: false,
+                h: false,
+                i: false,
+                j: false,
+                k: false,
+                l: false,
+                m: false,
+                n: false,
+                o: false,
+                p: false,
+                q: false,
+                r: false,
+                s: false,
+                t: false,
+                u: false,
+                v: false,
+                w: false,
+                x: false,
+                y: false,
+                z: false,
+            },
             currentLetter: "",
             // text: "FAR ILJJAR DTKRTKSR, TURRG SQTDUGSA FAR DTKRAUQR (SIA TDVAKSUQA LN SIA DTKEGKC JAK AK VAQRGLK LQGCGKTFA), ARS F'UKA DAR EGKPUTKSA-RGX KLUVAFFAR D'TQSIUQ ELKTK DLYFA JASSTKS AK REAKA FA DASAESGVA RIAQFLEB ILFJAR.F'GKSQGCUA DA FT KLUVAFFA. FAR ILJJAR DTKRTKSR QAOLRA RUQ UKA AKGCJA EQYOSLCQTOIGPUA. DTKR EASSA KLUVAFFA, RIAQFLEB ILFJAR QAURRGS T HQGRAQ FA ELDA DAR JARRTCAR EIGNNQAR PUG SAQQGNGAKS FT NAJJA DA RLK EFGAKS. EAR JARRTCAR RLKS ELJOLRAR DA RUGSAR DA RYJHLFAR DGNNAQAKSR, AK NLQJA DA OAQRLKKTCAR (TOOAFAR RSGEBJAK) TCGSTKS FAR HQTR AS FAR MTJHAR, OTQNLGR JUKGR DA OASGSR DQTOATUX : FAR « ILJJAR DTKRTKSR ».RIAQFLEB ILFJAR OTQVGAKS T ELJOQAKDQA FT RGCKGNGETSGLK DA EAR RAQGAR DA DARRGKR AK ASUDGTKS FAR NQAPUAKEAR D'TOOTQGSGLK DA  EITPUA OAQRLKKTCA, RAFLK FT JASILDA DA F'TKTFYRA NQAPUAKSGAFFA. FA EIGNNQA DA EA EQYOSLCQTJJA ARS AK NTGS SQAR RGJOFA. GF R'TCGS D'UKA RUHRSGSUSGLK TFOITHASGPUA : EITPUA OASGS OAQRLKKTCA QAOQARAKSA UKA FASSQA. F'GKSAQAS DA EA EIGNNQA ARS RT DGREQASGLK : USGFGRA DTKR DAR JARRTCAR CQGHLUGFFAR RUQ DAR JUQR LU DAR HLUSR DA OTOGAQ, GF OTRRA GKTOAQEU ETQ LK OAUS FA OQAKDQA OLUQ UK DARRGK D'AKNTKS -- EA PUA NTGS D'THLQD FA DLESAUQ WTSRLK, HGAK RUQ ! EAR CQGHLUGFFGR RLKS AK NTGS UKA NLQJA DA RSACTKLCQTOIGA, F'TQS DA QAKDQA TKLDGKR FAR JARRTCAR FAR OFUR RAEQASR.FA NFTC DA EAS AOQAUVA ARS AKRGHR{DTKEGKC_JAK_EGOIAQ_GR_JLKLTFOITHASGE}".toLowerCase(),
             // text: "enbxbktesovvensaqesittepinmesslrtevronu1rauinnayletewbpirsclasslrtevronuvrindiasmetiasnetew3piapenidiaenumareduepenucirasnltnesiqiauitorsolsecromlariauticrodfianeovvensaqeennepaeteuriqiatmenosdrzcuotoglesmeqiaucerpeuuremetesiqoariqedehiduaulmetenolqeildfavvreittepinmpasenserqadeenpirsbxbknluatasiauyledanyteuuresimvghdeszsuepeuresdopctaylenedessauiautepctoamemelhdtesdfingeesdfiylejolrmeste2iqrattedicauianegjcianqaniqiaumedolqerucirteulmemespessigesdfavvresmlberiqrattesmelhdtesluataseeseuredonsuauleteszsuepemedfavvrepenupiasteberjlanencteanedrasemetovvensaqeslrtiasnetesittepinmsijoluerenulnesahaepeteuureteqpeuuinunosserqadesilhcrasesiqedlnemavvadltuenolqettetewjlantedicauianecianqaniqiauresotltecro1tepeeuresuauletesmelhdtesettescerparenutemedrzcuigemeuolstespessigesdfavvresdicuesteberjlancirpadelhdavaglriaulnrimaogrippeimressecirtefiludoppinmepenuittepinmilnepmirpeerecerecirtirimaogonaopeuraeminstiregaonrepilgasuattotozitesumeponumamaeriddeterertiponueemesplnauaonscoanupepecenminutejolrciruoluoltonnesucisqltevtigesudomeimvgqhsld0sbxbkufevtigasdomeimvgqhsld0sbxbktesmaqasaonsmlgeneritpinganvlrenumonddondenureesmestescrepaersjolrsmejlanvideilcoanucredasolsemedtendfitexjlantovvensaqeittepinmedettedaedfoliticoruemeciraseuiaumevanauaqepenuverpeeitennepacolrnolsdettemetiqaduoareittiausolqrargg".toLowerCase()
@@ -124,7 +156,6 @@ export default {
                 }
                 lettersCount += 1
             }
-            console.log(letters);
             
             const denom = lettersCount * (lettersCount - 1)
 
@@ -162,7 +193,16 @@ export default {
                     }
                 }
             }
-            return Object.keys(ret).join('')
+
+            //Sort by value and return keys
+            const sortable = [];
+            for (const k in ret) {
+                sortable.push([k, ret[k]])
+            }
+
+            return sortable.sort((a, b) => a[1] > b[1])
+            .map(x => x[0])
+            .join('')
         },
         missingLetters() {
             const ret = []
@@ -188,6 +228,10 @@ export default {
             
             Vue.set(this.sub, from, to)
         },
+        toggleLockSub({from}) {
+            console.log('Lock sub')
+            Vue.set(this.locked, from, !this.locked[from])
+        },
         setCurrentLetter(letter) {
             this.currentLetter = letter
         },
@@ -196,6 +240,12 @@ export default {
         },
         copyError() {
             console.log('Copie error');
+        },
+        actionAuto() {
+            console.log('Sub auto');
+        },
+        actionRandom() {
+            console.log('Sub random');
         }
     },
     components: {

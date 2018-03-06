@@ -6,9 +6,8 @@
         :pos="i"
         :lplain="plain"
         :lcipher="cipher"
-        :active="cipher == currentLetter"
         :selected="i == pos"
-        :locked="locked.includes(i)"
+        :locked="locked[cipher]"
         @lock="toggleLock"
         @click="clickLetter" />
 </div>
@@ -23,12 +22,8 @@ export default {
     extends: Texte,
     props: {
         sub: Object,
+        locked: Object,
         currentLetter: String
-    },
-    data() {
-        return {
-            locked: []
-        }
     },
     methods: {
         sendLetter() {
@@ -39,7 +34,7 @@ export default {
             const keyCode = e.keyCode
             const key = e.key
             console.log(keyCode, key);
-            
+
             if(keyCode >= 112 && keyCode <= 123) return // Do nothing on Function key
 
             e.preventDefault();
@@ -54,8 +49,9 @@ export default {
             }
             this.sendLetter()
         },
-        toggleLock(e) {
-            
+        toggleLock({pos}) {
+            let letter = Object.keys(this.sub)[pos]
+            this.$emit('lock', {from: letter})
         }
     },
     components: {
