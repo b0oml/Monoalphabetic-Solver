@@ -15,10 +15,12 @@
                     <li><strong>Selected language :</strong> French</li>
                     <li><strong>Analysis time :</strong> 0.095 ms</li>
                 </ul>
-                <div class="warning preline" v-if="ic < 0.05" data-balloon="A cipher is detected as polyalphabetic when IC is lower than 0.05.
-                For information, the IC of a random text is 0.0385." data-balloon-length="large" data-balloon-pos="right">
-                    Warning! Polyalphabetic detected
-                </div>
+                <a href="https://en.wikipedia.org/wiki/Polyalphabetic_cipher" v-if="ic < 0.05 && text.length > 10">
+                    <div class="warning" data-balloon="A cipher is detected as polyalphabetic when IC is lower than 0.05.
+                    For information, the IC of a random text is 0.0385." data-balloon-length="large" data-balloon-pos="right">
+                        Warning! Polyalphabetic detected
+                    </div>
+                </a>
             </div>
             <div id="missing-letters" class="item">
                 <span class="item-title">Missing letters in alphabet</span>

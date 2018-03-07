@@ -50,6 +50,10 @@ body{
     background-color: #bab185;
 }
 
+a{
+    text-decoration: none;
+}
+
 .container{
     display: flex;
     min-height: 100%;
