@@ -90,10 +90,10 @@
             <div id="cipher" class="item">
                 <span class="item-title">Cipher</span>
                 <form @submit="decode">
-                    <span class="title">Paste your cipher</span>
+                    <span class="title">📖 Paste your cipher</span>
                     <textarea v-model="text" name="cipher-text" id="cipher-text" placeholder="Paste your cipher here"></textarea>
                     <hr>
-                    <span class="title">Or import your cipher from a file</span>
+                    <span class="title">📂 Or import your cipher from a file</span>
                     <input type="file" name="cipher-file" id="cipher-file" @change="onFileChange">
                     <hr>
                     <input type="submit" value="Decrypt">
@@ -322,9 +322,6 @@ form .title{
     display: block;
     color: #caba49;
     margin: 2px 0 5px;
-}
-form .title::before{
-    content: '# ';
 }
 
 .item-section{
