@@ -31,7 +31,6 @@ export default {
     },
     watch: {
         text(val) {
-            console.log('text updated')
             this.splittedText = val.split('')
         }
     },
@@ -75,28 +74,34 @@ export default {
             e.preventDefault();
             if(keyCode == 9) {
                 this.splittedText.splice(this.pos, 0, ' $')
-                this.pos++
+                this.nextPos()
                 
             } else if(keyCode == 8) {
                 if(this.splittedText[this.pos] == ' $')
                     this.splittedText.splice(this.pos, 1)
             }
             else if(keyCode == 37) { // Left
-                this.pos = Math.max(0, this.pos - 1);
+                this.prevPos()
             } else if (keyCode == 38) { // Top
                 //TODO
             } else if (keyCode == 39) { // Right
-                this.pos = Math.min(this.splittedText.length, this.pos + 1);
+                this.nextPos()
             } else if (keyCode == 40) { // Bottom
                 //TODO
             }
             else {
                 if (key.length == 1 && this.splittedText[this.pos] != ' $') { //&& /[a-zA-Z0-9-_ ]/.test(key)
                     this.$emit('change', {from: this.currentLetter, to: key})
-                    this.pos++
+                    this.nextPos()
                 }
             }
             this.sendLetter()
+        },
+        nextPos() {
+            this.pos = Math.min(this.splittedText.length - 1, this.pos + 1)
+        },
+        prevPos() {
+            this.pos = Math.max(0, this.pos - 1)
         }
     },
     components: {
