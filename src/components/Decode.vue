@@ -58,7 +58,7 @@
             <div id="cipher" class="item">
                 <span class="item-title">Cipher</span>
                 <div class="item-content" id="cipher-letters">
-                    <Texte :text="text" :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
+                    <TextePage :text="text" :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
                 </div>
                 <div class="stickbar">
                     <span class="stickbar-item" data-balloon="Copy the decrypted text" data-balloon-length="medium" data-balloon-pos="left"
@@ -74,6 +74,7 @@
 
 <script>
 import Texte from './Texte.vue'
+import TextePage from './TextePage.vue'
 import Alphabet from './Alphabet.vue'
 import Vue from 'vue'
 
@@ -221,7 +222,8 @@ export default {
     },
     components: {
         Texte,
-        Alphabet
+        Alphabet,
+        TextePage
     }
 }
 </script>

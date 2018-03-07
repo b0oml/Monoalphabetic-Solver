@@ -62,7 +62,7 @@ export default {
 }
 
 @for $i from 0 through 255 {
-    .active-#{$i} > .letter-#{$i} div{
+    .active-#{$i} .letter-#{$i} div{
         font-weight: 700;
         color: #d00;
     }
