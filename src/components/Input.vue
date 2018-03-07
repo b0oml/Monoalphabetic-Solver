@@ -173,9 +173,17 @@ export default {
                 text = text.toUpperCase()
             }
 
+            //Remove alphabet duplicat
+            const letters = this.choosedAlphabet.split('').reverse()
+            const abc = letters.filter((x, i) => letters.indexOf(x, i + 1) == -1)
+                .reverse()
+                .join('')
+            console.log('Alphabet', abc);
+
+
             // Compute substitution
             const sub = {}
-            for(let k of this.choosedAlphabet) {
+            for(let k of abc) {
                 sub[k] = k
             }
 
