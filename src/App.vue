@@ -150,10 +150,10 @@ footer{
     position: relative;
     z-index: 100;
     background-color: #bab185;
+    box-shadow: 0 5px 5px rgba(0,0,0,0.1)inset;
     padding: 10px 0 20px;
     text-align: center;
     color: #e4dcb4;
-    border-top: 2px solid #b4ab80;
 }
 footer ul li{
     display: inline-block;
@@ -171,6 +171,9 @@ footer ul li:first-child::before{
 footer a{
     color: #fff6ce;
     text-decoration: none;
+}
+footer a:hover{
+    color: #fff2b9;
 }
 footer .copyright{
 
