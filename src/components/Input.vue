@@ -194,7 +194,7 @@ export default {
             const reader = new FileReader();
             reader.readAsText(files[0], "UTF-8");
             reader.onload = evt => {
-                if (evt.target.result.length > 1000){
+                if (evt.target.result.length > 10000){
                     // Truncate file content
                     this.text = evt.target.result.substr(10000)
                     // Toast
