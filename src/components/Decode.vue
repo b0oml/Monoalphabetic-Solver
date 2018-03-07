@@ -23,12 +23,18 @@
                 <span class="item-title">Missing letters in alphabet</span>
                 <div class="item-content" id="missing-letters-letters">
                     <div v-for="l in missingLetters" :key="l" :class="{'letter': true, 'letter-active': l == currentLetter}">{{ l }}</div>
+                    <div v-if="!missingLetters.length" class="noletter">
+                        No missing letters
+                    </div>
                 </div>
             </div>
             <div id="multiple-letters" class="item">
                 <span class="item-title">Multiple letters in alphabet</span>
                 <div class="item-content" id="multiple-letters-letters">
                     <Texte :text="multipleLetters" :sub="sub" @change="changeSub" @select="setCurrentLetter" :current-letter="currentLetter"/>
+                    <div v-if="!multipleLetters.length" class="noletter">
+                        No multiple letters
+                    </div>
                 </div>
             </div>
             <div id="biggest-words" class="item">
@@ -302,5 +308,16 @@ export default {
     /* background-color: #ff9d5e; */
     border: 1px solid #ffddc7;
     color: #ff9d5e;
+}
+
+.noletter{
+    font-size: 14px;
+    text-align: center;
+}
+#missing-letters-letters .noletter{
+    color: #f2a2a2;
+}
+#multiple-letters-letters .noletter{
+    color: #a9c0da;
 }
 </style>

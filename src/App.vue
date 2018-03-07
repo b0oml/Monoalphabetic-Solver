@@ -57,8 +57,7 @@ body{
 
 #left-side, #right-side{
     flex-direction: column;
-    padding-bottom: 10px;
-    /* border-bottom: 2px solid #f00; */
+    padding-bottom: 6px;
 }
 
 #left-side{
