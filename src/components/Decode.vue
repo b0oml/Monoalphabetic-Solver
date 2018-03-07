@@ -236,10 +236,18 @@ export default {
             this.currentLetter = letter
         },
         copySucced() {
-            console.log('Copied');
+            this.$toasted.show("Copied in clipboard", { 
+                theme: "primary", 
+                position: "bottom-right", 
+                duration : 2000
+            });
         },
         copyError() {
-            console.log('Copie error');
+            this.$toasted.show("Failed to copy in clipboard", { 
+                theme: "primary", 
+                position: "bottom-right", 
+                duration : 2000
+            });
         },
         actionAuto() {
             console.log('Sub auto');
