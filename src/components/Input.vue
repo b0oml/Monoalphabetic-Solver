@@ -196,7 +196,7 @@ export default {
             reader.onload = evt => {
                 if (evt.target.result.length > 10000){
                     // Truncate file content
-                    this.text = evt.target.result.substr(10000)
+                    this.text = evt.target.result.substr(0,10000)
                     // Toast
                     this.$toasted.show(`File ${files[0].name} truncated to 10000 characters`, { 
                         theme: "primary",
