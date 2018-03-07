@@ -36,9 +36,11 @@ export default {
     text-align: center;
     color: #63562E;
     cursor: pointer;
-    background-color: orangered;
+    background-color: #eae0c3;
+    opacity: 0.5;
 }
 .locker.lock {
-    background-color: greenyellow;
+    background-color: #ded0a8;
+    opacity: 1;
 }
 </style>

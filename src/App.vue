@@ -44,7 +44,10 @@ html, body{
     height: 100%;
     margin: 0;
     padding: 0;
+}
+body{
     font-family: 'Lato', sans-serif;
+    background-color: #bab185;
 }
 
 .container{
@@ -54,6 +57,8 @@ html, body{
 
 #left-side, #right-side{
     flex-direction: column;
+    padding-bottom: 10px;
+    /* border-bottom: 2px solid #f00; */
 }
 
 #left-side{
@@ -139,6 +144,36 @@ html, body{
 
 .item-content {
     padding: 6px 8px;
+}
+
+footer{
+    position: relative;
+    z-index: 100;
+    background-color: #bab185;
+    padding: 10px 0 20px;
+    text-align: center;
+    color: #e4dcb4;
+    border-top: 2px solid #b4ab80;
+}
+footer ul li{
+    display: inline-block;
+    margin: 0 8px;
+    list-style-type: none;
+}
+footer ul li::before{
+    content: '-';
+    margin-right: 16px;
+}
+footer ul li:first-child::before{
+    content: '';
+}
+
+footer a{
+    color: #fff6ce;
+    text-decoration: none;
+}
+footer .copyright{
+
 }
 
 @media screen and (max-width: 860px) {
