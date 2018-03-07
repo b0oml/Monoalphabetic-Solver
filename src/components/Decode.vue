@@ -192,6 +192,7 @@ export default {
             this.currentLetter = letter
         },
         copySucced() {
+            // Toast
             this.$toasted.show("Copied in clipboard", { 
                 theme: "primary", 
                 position: "bottom-right", 
@@ -199,8 +200,10 @@ export default {
             });
         },
         copyError() {
+            // Toast
             this.$toasted.show("Failed to copy in clipboard", { 
-                theme: "primary", 
+                theme: "primary",
+                type: "error",
                 position: "bottom-right", 
                 duration : 2000
             });

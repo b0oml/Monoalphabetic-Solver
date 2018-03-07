@@ -91,7 +91,7 @@
                     <textarea v-model="text" name="cipher-text" id="cipher-text" placeholder="Paste your cipher here"></textarea>
                     <hr>
                     <span class="title">Or import your cipher as a file</span>
-                    <input type="file" name="cipher-file" id="cipher-file">
+                    <input type="file" name="cipher-file" id="cipher-file" @change="onFileChange">
                     <hr>
                     <input type="submit" value="Decrypt">
                 </form>
@@ -184,6 +184,46 @@ export default {
             
 
             this.$emit('decode', {text, sub: sub2})
+        },
+        onFileChange(e) {
+            // Get file
+            const files = e.target.files || e.dataTransfer.files;
+            if (!files.length)
+                return
+            // Get file content
+            const reader = new FileReader();
+            reader.readAsText(files[0], "UTF-8");
+            reader.onload = evt => {
+                if (evt.target.result.length > 1000){
+                    // Truncate file content
+                    this.text = evt.target.result.substr(10000)
+                    // Toast
+                    this.$toasted.show(`File ${files[0].name} truncated to 10000 characters`, { 
+                        theme: "primary",
+                        position: "bottom-right", 
+                        duration : 3000
+                    });    
+                }
+                else{
+                    // File content
+                    this.text = evt.target.result
+                    // Toast
+                    this.$toasted.show(`File ${files[0].name} successfully imported`, { 
+                        theme: "primary",
+                        position: "bottom-right", 
+                        duration : 3000
+                    });
+                }
+            }
+            reader.onerror = () => {
+                // Toast
+                this.$toasted.show(`Failed to import ${files[0].name}`, { 
+                    theme: "primary",
+                    type: "error",
+                    position: "bottom-right", 
+                    duration : 3000
+                });
+            }
         }
     },
     components: {
