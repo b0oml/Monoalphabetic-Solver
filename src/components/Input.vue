@@ -180,8 +180,7 @@ export default {
             }
 
             //Algos
-            const sub2 = analyse.frequenceAnalysis(analyse.FRENCH_FREQS, text, sub)
-            console.log(sub2);
+            const sub2 = analyse.frequenceAnalysis(sub, text, analyse.FRENCH_FREQS)
             
 
             this.$emit('decode', {text, sub: sub2})
