@@ -39,6 +39,9 @@
                                     English : 0.0667
                                     French : 0.0778" data-balloon-length="xlarge" data-balloon-pos="right">?</a>
                 </div>
+                <div class="warning" v-if="ic < 0.05 && text.length > 10">
+                    Warning! Polyalphabetic detected
+                </div>
             </div>
             <div id="alphabet-options" class="item">
                 <span class="item-title">Alphabet options</span>
@@ -82,7 +85,7 @@
         <div id="right-side">
             <div id="header" class="item">
                 <span class="title">Monoalphabetic Substitution</span>
-                <span class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa illo delectus dolorum mollitia rem atque consequuntur, porro aliquam officiis suscipit, omnis repellendus veniam accusamus optio consequatur eaque possimus nobis perspiciatis.</span>
+                <span class="description">Substitution cipher is a cipher that has been in use for many hundreds of years and proven today unsecure. It is a data encryption scheme in which units of the plaintext (generally single letters or pairs of letters of ordinary text) are replaced with other symbols or groups of symbols. It basically consists of substituting every plaintext character for a different ciphertext character.</span>
             </div>
             <div id="cipher" class="item">
                 <span class="item-title">Cipher</span>
@@ -90,7 +93,7 @@
                     <span class="title">Paste your cipher</span>
                     <textarea v-model="text" name="cipher-text" id="cipher-text" placeholder="Paste your cipher here"></textarea>
                     <hr>
-                    <span class="title">Or import your cipher as a file</span>
+                    <span class="title">Or import your cipher from a file</span>
                     <input type="file" name="cipher-file" id="cipher-file" @change="onFileChange">
                     <hr>
                     <input type="submit" value="Decrypt">
@@ -235,6 +238,7 @@ export default {
 #header .title{
     display: block;
     margin: 0 0 15px;
+    padding-top: 15px;
     /* font-family: 'Abril Fatface', cursive; */
     font-family: 'Dancing Script';
     text-align: center;
@@ -291,14 +295,12 @@ input[type="submit"]{
     margin: 0 auto;
     padding: 5px 10px;
     cursor: pointer;
-    color: #c6ba61;
-    border: 1px solid #efe9cb;
-    background-color: #fff;
-    /* background-color: #ece4bc; */
+    background-color: #bab185;
+    border: 0;
+    color: #fff;
 }
 input[type="submit"]:hover{
-    color: #fff;
-    background-color: #ece4bc;
+    background-color: #cbc194;
 }
 input[type="file"]{
     color: #aaa479;
@@ -325,5 +327,14 @@ form .title::before{
 .item-section strong{
     color: #d7b915;
     font-weight: 300;
+}
+.warning{
+    margin-top: 5px;
+    padding: 5px 0;
+    font-size: 14px;
+    text-align: center;
+    /* background-color: #ff9d5e; */
+    border: 1px solid #ffddc7;
+    color: #ff9d5e;
 }
 </style>

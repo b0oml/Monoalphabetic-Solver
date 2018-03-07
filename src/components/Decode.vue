@@ -1,6 +1,9 @@
 <template>
     <div class="decode container">
         <div id="left-side">
+            <div class="back-button" >
+                <button @click="back">Back</button>                
+            </div>
             <div id="informations" class="item">
                 <span class="item-title">Informations</span>
                 <ul>
@@ -12,7 +15,9 @@
                     <li><strong>Selected language :</strong> French</li>
                     <li><strong>Analysis time :</strong> 0.095 ms</li>
                 </ul>
-                <div class="alert" v-if="ic < 0.05">Attention! Polyalphabetic</div>
+                <div class="warning" v-if="ic < 0.05">
+                    Warning! Polyalphabetic detected
+                </div>
             </div>
             <div id="missing-letters" class="item">
                 <span class="item-title">Missing letters in alphabet</span>
@@ -68,7 +73,6 @@
                 </div>
             </div>
         </div>
-        <button @click="back">Back</button>
     </div>
 </template>
 
@@ -265,5 +269,36 @@ export default {
 .letter-active {
     font-weight: 700;
     color: #d00;
+}
+.back-button{
+    margin: 5px;
+    /* box-sizing: border-box; */
+    /* width: 100%; */
+}
+.back-button button{
+    width: 100%;
+    padding: 5px 0;
+    background-color: #bab185;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+}
+.back-button button:before{
+    content: '⬅ ';
+    position: relative;
+    top: 1px;
+    font-size: 16px;
+}
+.back-button button:hover{
+    background-color: #cbc194;
+}
+.warning{
+    margin-top: 5px;
+    padding: 5px 0;
+    font-size: 14px;
+    text-align: center;
+    /* background-color: #ff9d5e; */
+    border: 1px solid #ffddc7;
+    color: #ff9d5e;
 }
 </style>
