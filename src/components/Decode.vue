@@ -15,7 +15,8 @@
                     <li><strong>Selected language :</strong> French</li>
                     <li><strong>Analysis time :</strong> 0.095 ms</li>
                 </ul>
-                <div class="warning" v-if="ic < 0.05">
+                <div class="warning preline" v-if="ic < 0.05" data-balloon="A cipher is detected as polyalphabetic when IC is lower than 0.05.
+                For information, the IC of a random text is 0.0385." data-balloon-length="large" data-balloon-pos="right">
                     Warning! Polyalphabetic detected
                 </div>
             </div>

@@ -39,7 +39,8 @@
                                     English : 0.0667
                                     French : 0.0778" data-balloon-length="xlarge" data-balloon-pos="right">?</a>
                 </div>
-                <div class="warning" v-if="ic < 0.05 && text.length > 10">
+                <div class="warning" v-if="ic < 0.05 && text.length > 10" data-balloon="A cipher is detected as polyalphabetic when IC is lower than 0.05.
+                For information, the IC of a random text is 0.0385." data-balloon-length="large" data-balloon-pos="right">
                     Warning! Polyalphabetic detected
                 </div>
             </div>
