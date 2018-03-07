@@ -1,7 +1,7 @@
 <template>
 <div :class="['text', 'active-'+currentLetter.charCodeAt(0)]" @keydown="key" tabindex="1">
     <!-- <div class="tmp">Pos : {{this.pos}}</div> -->
-    <div>
+    <div v-if="maxPage">
         <button @click="changePage(-1)">Prev</button>
         <span>Page {{page+1}} / {{maxPage+1}}</span>
         <button @click="changePage(1)">Next</button>
