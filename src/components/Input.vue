@@ -1,68 +1,197 @@
 <template>
-    <div class="decode container">
+    <div class="input container">
         <div id="left-side">
-            <div id="informations" class="item">
+            <div id="analysis-options" class="item">
+                <span class="item-title">Analysis options</span>
+                <form>
+                    <fieldset>
+                        <legend>Cryptanalysis mode</legend>
+                        <p>
+                            <input v-model="mode" type="radio" id="manual" name="cryptanalysis-mode" value="manual">
+                            <label for="manual">Manual (no analysis)</label>
+                        </p>
+                        <p>                
+                            <input v-model="mode" type="radio" id="semiauto-freq" name="cryptanalysis-mode" value="semiauto-freq">
+                            <label for="semiauto-freq">Semi-automatic: frequency analysis</label><br>
+                        </p>
+                        <p>                
+                            <input v-model="mode" type="radio" id="semiauto-pattern" name="cryptanalysis-mode" value="semiauto-pattern">
+                            <label for="semiauto-pattern">Semi-automatic: pattern analysis</label><br>
+                        </p>
+                        <p>                
+                            <input v-model="mode" type="radio" id="semiauto-pattern-fast" name="cryptanalysis-mode" value="semiauto-pattern-fast">
+                            <label for="semiauto-pattern-fast">Semi-automatic: pattern analysis (fast)</label>
+                        </p>
+                    </fieldset>
+                </form>
+            </div>
+            <div id="language-options" class="item">
+                <span class="item-title">Language options</span>
+                <form>
+                    <select v-model="choosedLanguage" name="language" id="language">
+                        <option value="English">English</option>
+                        <option value="French">French</option>
+                    </select>
+                </form>
+                <div><strong>IC :</strong> {{ic}} <span v-show="ic != 0">({{detectedLanguage}})</span></div>                
+            </div>
+            <div id="alphabet-options" class="item">
+                <span class="item-title">Alphabet options</span>
+                <form>
+                    <fieldset>
+                        <legend>Alphabet</legend>
+                        <p>
+                            <input v-model="alphabetType" value="predefined" type="radio" id="predefined-alphabet-radio" name="alphabet">
+                            <label for="predefined-alphabet-radio">Predefined alphabet</label>
+                        </p>
+                        <p>
+                            <input v-model="alphabetType" value="custom" type="radio" id="custom-alphabet-radio" name="alphabet">
+                            <label for="custom-alphabet-radio">Custom alphabet</label>
+                        </p>
+                        <p v-if="alphabetType == 'predefined'">
+                            <select v-model="choosedAlphabet" name="predefined-alphabet" id="predfined-alphabet">
+                                <option value="ABCDEFGHIJKLMNOPQRSTUVWXYZ">ABCDEFGHIJKLMNOPQRSTUVWXYZ</option>
+                                <option value="ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789">ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789</option>
+                            </select>
+                        </p>
+                        <p v-else-if="alphabetType == 'custom'">
+                            <input v-model="choosedAlphabet" type="text" name="custom-alphabet" id="custom-alphabet">
+                        </p>
+                    </fieldset>
+                    <fieldset>
+                        <input v-model="ignoreCase" type="checkbox" name="ignore-case" id="ignore-case">
+                        <label for="ignore-case">Ignore case</label>
+                    </fieldset>
+                </form>
+            </div>
+            <!-- <div id="informations" class="item">
                 <span class="item-title">Informations</span>
                 <ul>
-                    <li><strong>IC :</strong> {{ ic }} ({{ detectedLanguage }})
+                    <li>
+                        <strong>IC :</strong> 0.076 (French)
                         <a href="https://www.dcode.fr/index-coincidence" class="tooltip preline" data-balloon=" Index of Coincidence is a cryptanalysis technique studying the probability of finding repeating letters in an encrypted text.
-                        English : 0.0667
-                        French : 0.0778" data-balloon-length="xlarge" data-balloon-pos="right">?</a>
+                                    English : 0.0667
+                                    French : 0.0778" data-balloon-length="xlarge" data-balloon-pos="right">?</a>
                     </li>
-                    <li><strong>Selected language :</strong> French</li>
-                    <li><strong>Analysis time :</strong> 0.095 ms</li>
-                    <li><strong>Copyright :</strong> LUX</li>
                 </ul>
-            </div>
-            <div id="" class="item">
-                <span class="item-title">Option Langue</span>
-                <div class="item-content">
-                    Options
-                </div>
-            </div>
-            <div id="" class="item">
-                <span class="item-title">Options alphabet</span>
-                <div class="item-content">
-                    Options
-                </div>
-            </div>
-            <div class="item" id="debug">
+            </div> -->
+            <div id="debug" class="item">
                 <span class="item-title">Debug</span>
-                <div class="item-content">
-                    <!-- <p>Letter: {{ currentLetter }}</p> -->
-                </div>
+                <ul>
+                    <li>mode: {{mode}}</li>
+                    <li>choosedLanguage: {{choosedLanguage}}</li>
+                    <li>choosedAlphabet: {{choosedAlphabet}}</li>
+                    <li>ignoreCase: {{ignoreCase}}</li>
+                </ul>
             </div>
         </div>
         <div id="right-side">
-            <div id="welcom" class="item">
-                <span class="item-title">Welcom</span>
-                <div class="item-content">
-                    Monoalphabetic solver
-                </div>
+            <div id="header" class="item">
+                <span class="title">Monoalphabetic Substitution</span>
+                <span class="description">Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsa illo delectus dolorum mollitia rem atque consequuntur, porro aliquam officiis suscipit, omnis repellendus veniam accusamus optio consequatur eaque possimus nobis perspiciatis.</span>
             </div>
-            <div id="input" class="item">
+            <div id="cipher" class="item">
                 <span class="item-title">Cipher</span>
-                <div class="item-content">
-                    Input
-                </div>
+                <form @submit="decode">
+                    <span class="title">Paste your cipher</span>
+                    <textarea v-model="text" name="cipher-text" id="cipher-text" placeholder="Paste your cipher here"></textarea>
+                    <hr>
+                    <span class="title">Or import your cipher as a file</span>
+                    <input type="file" name="cipher-file" id="cipher-file">
+                    <hr>
+                    <input type="submit" value="Decrypt">
+                </form>
             </div>
         </div>
     </div>
 </template>
 
 <script>
-import Vue from 'vue'
+import analyse from '../analyse.js'
 
 export default {
     name: 'Input',
     data() {
         return {
+            mode: 'manual',
+            choosedLanguage: 'English',
+            alphabetType: 'predefined',
+            choosedAlphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            ignoreCase: true,
+            text: ""
         }
     },
     computed: {
+        ic() {
+            if(this.text == "" || this.text.length <= 10) return 0.0
+
+            const text = this.text.toLowerCase()
+            const letters = {}
+            let lettersCount = 0
+            for(const l of text) {
+                if(!letters[l]) {
+                    letters[l] = 1
+                } else {
+                    letters[l] += 1
+                }
+                lettersCount += 1
+            }
+            
+            const denom = lettersCount * (lettersCount - 1)
+
+            let ret = 0.0
+            for(const v of Object.values(letters)) {
+                ret += (v * (v - 1)) / denom
+            }
+            return Math.round(ret * 1000) / 1000
+        },
+        detectedLanguage() {
+            if(this.ic < 0.05) return 'Polyalphabetic'
+
+            const ics = {
+                "English": 0.0667,
+                "French": 0.0778,
+                // "Allemand": 0,0762,
+                // "Espagnol": 0,0770,
+            }
+            let best = "English"
+            let score = Math.abs(ics[best] - this.ic)
+            for(let key in ics) {
+                let currentScore = Math.abs(ics[key] - this.ic)
+                if(currentScore < score) {
+                    best = key
+                    score = currentScore
+                }
+            }
+            //Change selected language
+            // this.choosedLanguage = best            
+            return best
+        },
     },
     methods: {
+        decode(e) {
+            e.preventDefault()
+            console.log('Decode start')
 
+            //Compuet text
+            let text = this.text
+            if(this.ignoreCase) {
+                text = text.toUpperCase()
+            }
+
+            // Compute substitution
+            const sub = {}
+            for(let k of this.choosedAlphabet) {
+                sub[k] = k
+            }
+
+            //Algos
+            const sub2 = analyse.frequenceAnalysis(analyse.FRENCH_FREQS, text, sub)
+            console.log(sub2);
+            
+
+            this.$emit('decode', {text, sub: sub2})
+        }
     },
     components: {
     }
@@ -70,147 +199,88 @@ export default {
 </script>
 
 <style scoped>
-
-.container{
-    display: flex;
-    min-height: 100%;
-}
-
-#left-side, #right-side{
-    flex-direction: column;
-}
-
-#left-side{
-    z-index: 3;
-    flex: 1;
-    min-width: 300px;
-    background-color: #ece4bc;
-    box-shadow: 2px 0 5px rgb(236, 228, 188);
-    border-right: 1px solid #e3d9aa;
-}
-#right-side{
-    z-index: 1;
-    flex: 3;
-    padding-left: 8px;
-    background-color: #f8f2d7;
-}
-
-.item{
-    position: relative;
-    background-color: #fff;
-    flex: 1 100%;
-    min-height: 30px;
-    margin: 5px;
-    padding: 0 20px 10px;
-}
-.item-title{
-    display: inline-block;
-    width: 100%;
-    margin-bottom: 10px;
-    padding: 7px 0;
-    border-bottom: 1px solid #f9f5dd;
+#header .title{
+    display: block;
+    margin: 0 0 15px;
+    /* font-family: 'Abril Fatface', cursive; */
+    font-family: 'Dancing Script';
     text-align: center;
-    font-size: 12px;
-    color: #c5b437;
-    text-transform: uppercase;
+    color: #caba49;
+    font-size: 26px;    
+    /* letter-spacing: 1px; */
+}
+#header .description{
+    display: block;
+    color: #605716;
+    font-size: 15px;
+    line-height: 20px;
+    padding-bottom: 10px;
 }
 
-#informations ul{
-    font-size: 13px;
-    color: #a29429;
-    line-height: 19px;
-    list-style-type: none;
+form p{
     margin: 0;
-    padding: 0;
 }
-#informations ul strong{
-    color: #d7b915;
-    font-weight: 300;
+form label{
+    color: #a29429;
+    font-size: 13px;
+    position: relative;
+    bottom: 3px;
+}
+fieldset{
+    padding-top: 10px;
+    padding-bottom: 10px;
+    margin: 2px 0;
+    border: 1px solid #f9f5dd;
+}
+fieldset legend{
+    color: #605716;
+    padding: 0 10px;
 }
 
-.stickbar{
-    position: absolute;
-    top: 0;
-    right: 0;
+#cipher textarea{
+    box-sizing: border-box;
+    min-width: 100%;
+    height: 250px;
+    padding: 10px 12px;
+    line-height: 16px;
+    color: #605716;
+    border: 1px solid #efe9cb;
 }
-.stickbar-item{
-    display: inline-block;
-    font-size: 14px;
-    padding: 6px 7px;
+select, input[type="text"], input[type="file"]{
+    box-sizing: border-box;
+    width: 100%;
+    margin: 4px 0;
+}
+
+input[type="submit"]{
+    display: block;
+    width: 100%;
+    margin: 0 auto;
+    padding: 5px 10px;
     cursor: pointer;
-    color: #d8d2a7;
+    color: #c6ba61;
+    border: 1px solid #efe9cb;
+    background-color: #fff;
+    /* background-color: #ece4bc; */
 }
-.stickbar-item:hover{
-    background-color: #ece4bc;
+input[type="submit"]:hover{
     color: #fff;
-}
-
-.tooltip{
-    display: inline-block;
     background-color: #ece4bc;
-    margin-left: 4px;
-    padding: 1px 4px 0;
-    height: 16px;
-    color: #fff;
-    text-decoration: none;
 }
-.tooltip:hover{
-    background-color: #e0d7af;
-}
-.preline[data-balloon]:after{
-    white-space: pre-line !important;
+input[type="file"]{
+    color: #aaa479;
 }
 
-.item-content {
-    padding: 6px 8px;
+hr{
+    border: 0;
+    border-bottom: 1px solid #f9f5dd;
 }
-
-#missing-letters-letters{
-    background-color: #ffd1d1;
+form .title{
+    display: block;
+    color: #caba49;
+    margin: 2px 0 5px;
 }
-#multiple-letters-letters{
-    background-color: #d1e7ff;
-}
-#biggest-words-letters{
-    background-color: #FCF7E9;
-}
-
-#alphabet-letters{
-    background-color: #FCF7E9;
-}
-#cipher-letters{
-    background-color: #F9EFD3;
-}
-
-@media screen and (max-width: 860px) {
-    .container{
-        flex-direction: column;
-    }
-    #left-side{
-        order: 2;
-    }
-}
-
-.letter{
-    vertical-align: top;
-    display:inline-block;
-    margin: -1px;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    width: 12px;
-    height: 20px;
-    padding: 0px 3px 0px 3px;
-    background: linear-gradient(#fcf8ea,#ffffff,#f8efd3);
-    font: normal 12px/22px "Lucida Console", "Trebuchet MS", Arial, Helvetica, sans-serif;
-    text-align: center;
-    /* text-transform: uppercase; */
-    color: #63562E;
-    border: #D0BE90 solid 1px;
-}
-.letter:hover{
-    font-weight: 700;
-}
-.letter-active {
-    font-weight: 700;
-    color: #d00;
+form .title::before{
+    content: '# ';
 }
 </style>
