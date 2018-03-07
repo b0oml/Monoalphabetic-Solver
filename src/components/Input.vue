@@ -33,7 +33,12 @@
                         <option value="French">French</option>
                     </select>
                 </form>
-                <div><strong>IC :</strong> {{ic}} <span v-show="ic != 0">({{detectedLanguage}})</span></div>                
+                <div class="item-section">
+                    <strong>IC :</strong> {{ic}} <span v-show="ic != 0">({{detectedLanguage}})</span>
+                    <a href="https://www.dcode.fr/index-coincidence" class="tooltip preline" data-balloon=" Index of Coincidence is a cryptanalysis technique studying the probability of finding repeating letters in an encrypted text.
+                                    English : 0.0667
+                                    French : 0.0778" data-balloon-length="xlarge" data-balloon-pos="right">?</a>
+                </div>
             </div>
             <div id="alphabet-options" class="item">
                 <span class="item-title">Alphabet options</span>
@@ -64,17 +69,6 @@
                     </fieldset>
                 </form>
             </div>
-            <!-- <div id="informations" class="item">
-                <span class="item-title">Informations</span>
-                <ul>
-                    <li>
-                        <strong>IC :</strong> 0.076 (French)
-                        <a href="https://www.dcode.fr/index-coincidence" class="tooltip preline" data-balloon=" Index of Coincidence is a cryptanalysis technique studying the probability of finding repeating letters in an encrypted text.
-                                    English : 0.0667
-                                    French : 0.0778" data-balloon-length="xlarge" data-balloon-pos="right">?</a>
-                    </li>
-                </ul>
-            </div> -->
             <div id="debug" class="item">
                 <span class="item-title">Debug</span>
                 <ul>
@@ -282,5 +276,15 @@ form .title{
 }
 form .title::before{
     content: '# ';
+}
+
+.item-section{
+    padding: 6px 0 3px;
+    font-size: 13px;
+    color: #a29429;
+}
+.item-section strong{
+    color: #d7b915;
+    font-weight: 300;
 }
 </style>

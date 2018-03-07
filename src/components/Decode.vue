@@ -128,7 +128,7 @@ export default {
                 // "Allemand": 0,0762,
                 // "Espagnol": 0,0770,
             }
-            let best = "Anglais"
+            let best = "English"
             let score = Math.abs(ics[best] - this.ic)
             for(let key in ics) {
                 let currentScore = Math.abs(ics[key] - this.ic)
