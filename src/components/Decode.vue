@@ -253,6 +253,7 @@ export default {
 }
 
 #alphabet-letters{
+    display: flex;
     background-color: #FCF7E9;
 }
 #cipher-letters{
@@ -322,5 +323,21 @@ export default {
 }
 #multiple-letters-letters .noletter{
     color: #a9c0da;
+}
+
+#alphabet-letters .text{
+    width: 100%;
+}
+#alphabet-letters .buttons button{
+    margin: 1px 0;
+    width: 100%;
+    padding: 4px 0;
+    background-color: #f3ebd5;
+    border: 0;
+    color: #fff;
+    cursor: pointer;
+}
+#alphabet-letters .buttons button:hover{
+    background-color: #ece1c5;
 }
 </style>
