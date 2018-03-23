@@ -37,6 +37,12 @@ export default {
         }
     },
     methods: {
+        sendLetter() {
+            let offset = this.pageSize * this.page
+            let letter = this.splittedText[this.pos + offset]
+            if(letter == ' $') letter = '_'
+            this.$emit('select', letter)
+        },
         changePage(val) {
             this.page = Math.max(Math.min(this.page + val, this.maxPage), 0)
         },
@@ -45,19 +51,7 @@ export default {
         },
         nextPos() {
             this.pos = Math.min(this.splittedText.length - (this.page * this.pageSize) - 1, this.pageSize - 1, this.pos + 1)
-            // this.pos = this.pos + 1
-            // if(this.pos >= this.pageSize) {
-            //     this.changePage(1)
-            //     this.pos = 0
-            // }
         },
-        // prevPos() {
-        //     this.pos = this.pos - 1
-        //     if(this.pos < 0) {
-        //         this.changePage(-1)
-        //         this.pos = this.pageSize - 1//TODO work in last page
-        //     }
-        // }
     },
     components: {
         Letter
