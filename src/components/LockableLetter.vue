@@ -7,9 +7,9 @@
 </template>
 
 <script>
-import Letter from './Letter.vue'
+import Letter from "./Letter.vue";
 export default {
-    name: 'LockableLetter',
+    name: "LockableLetter",
     extends: Letter,
     props: {
         locked: {
@@ -19,11 +19,11 @@ export default {
     },
     methods: {
         onLock(e) {
-            e.stopPropagation()
-            this.$emit('lock', {pos: this.pos})
+            e.stopPropagation();
+            this.$emit("lock", { pos: this.pos });
         }
     }
-}
+};
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
@@ -34,7 +34,7 @@ export default {
     padding: 2px 0;
     font-size: 12px;
     text-align: center;
-    color: #63562E;
+    color: #63562e;
     cursor: pointer;
     background-color: #eae0c3;
     opacity: 0.5;

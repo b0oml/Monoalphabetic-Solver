@@ -1,31 +1,31 @@
 import Vue from 'vue'
 
 
-function swap(items, firstIndex, secondIndex){
+function swap(items, firstIndex, secondIndex) {
     var temp = items[firstIndex];
     items[firstIndex] = items[secondIndex];
     items[secondIndex] = temp;
 }
 
-function selectionSort(items){
+function selectionSort(items) {
 
     var len = items.length,
         min;
 
-    for (let i=0; i < len; i++){
+    for (let i = 0; i < len; i++) {
 
         //set minimum to this position
         min = i;
 
         //check the rest of the array to see if anything is smaller
-        for (let j=i+1; j < len; j++){
-            if (items[j].value < items[min].value){
+        for (let j = i + 1; j < len; j++) {
+            if (items[j].value < items[min].value) {
                 min = j;
             }
         }
 
         //if the minimum isn't in the position, swap it
-        if (i != min){
+        if (i != min) {
             swap(items, i, min);
         }
     }
@@ -33,40 +33,45 @@ function selectionSort(items){
     return items;
 }
 
-/** 
+/**
  * Analyse fréquenciel avec un dictionnaire de frequence
-*/
+ */
 const frequenceAnalysis = (sub, text, freqs) => {
     text = text.toUpperCase()
 
     // Count letters
     const ret = {}
-    for(const l of text) {
-        if(sub[l] == undefined){
+    for (const l of text) {
+        if (sub[l] == undefined) {
             continue
-        } 
-        if(ret[l] != undefined) {
+        }
+        if (ret[l] != undefined) {
             ret[l]++
         } else {
             ret[l] = 1
         }
     }
 
-    for(const k of Object.keys(ret)) {
+    for (const k of Object.keys(ret)) {
         ret[k] = ret[k] / text.length
     }
 
     const probs = [];
     for (const k of Object.keys(ret)) {
-        probs.push({key: k, value: ret[k]})
+        probs.push({
+            key: k,
+            value: ret[k]
+        })
     }
 
     // const sortedProbs = probs.sort((a, b) => a[1] < b[1]).sort((a, b) => a[1] < b[1]).sort((a, b) => a[1] < b[1])
     const sortedProbs = selectionSort(probs).reverse()
 
     let i = 0
-    for(const {key} of sortedProbs) {
-        if(i < freqs.length) {
+    for (const {
+            key
+        } of sortedProbs) {
+        if (i < freqs.length) {
             Vue.set(sub, key, freqs[i][0])
         }
         i++
@@ -104,5 +109,7 @@ const freqs = [
     ['Z', 0.0007]
 ]
 
-export default {frequenceAnalysis, FRENCH_FREQS: freqs}
-
+export default {
+    frequenceAnalysis,
+    FRENCH_FREQS: freqs
+}

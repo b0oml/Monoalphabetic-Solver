@@ -6,65 +6,67 @@
 </template>
 
 <script>
-import Decode from './components/Decode.vue'
-import Input from './components/Input.vue'
+import Decode from "./components/Decode.vue";
+import Input from "./components/Input.vue";
 
 export default {
-  name: 'app',
-  data() {
-    return {
-      page: 0,
-      textIn: "",
-      subIn: {}
-    }
-  },
-  methods: {
-    decode({sub, text}) {
-        this.textIn = text
-        this.subIn = sub
-
-        // Open decode page
-        this.page = 1
+    name: "app",
+    data() {
+        return {
+            page: 0,
+            textIn: "",
+            subIn: {}
+        };
     },
-    back() {
-        this.page = 0
+    methods: {
+        decode({ sub, text }) {
+            this.textIn = text;
+            this.subIn = sub;
+
+            // Open decode page
+            this.page = 1;
+        },
+        back() {
+            this.page = 0;
+        }
+    },
+    components: {
+        Decode,
+        Input
     }
-  },
-  components: {
-    Decode,
-    Input,
-  }
-}
+};
 </script>
 
 <style>
-@import url('https://fonts.googleapis.com/css?family=Lato|Dancing+Script');
+@import url("https://fonts.googleapis.com/css?family=Lato|Dancing+Script");
 
-html, body{
+html,
+body {
     height: 100%;
     margin: 0;
     padding: 0;
 }
-body{
-    font-family: 'Lato', sans-serif;
+body {
+    font-family: "Lato", sans-serif;
     background-color: #bab185;
 }
 
-a{
+a {
     text-decoration: none;
 }
 
-.container{
+.container {
     display: flex;
     min-height: 100%;
 }
 
-#left-side, #right-side{
+#left-side,
+#right-side {
     flex-direction: column;
     padding-bottom: 6px;
 }
 
-#left-side{
+#left-side {
     z-index: 3;
     flex: 1;
     min-width: 300px;
@@ -72,14 +74,14 @@ a{
     box-shadow: 2px 0 5px rgb(236, 228, 188);
     border-right: 1px solid #e3d9aa;
 }
-#right-side{
+#right-side {
     z-index: 1;
     flex: 3;
     padding-left: 8px;
     background-color: #f8f2d7;
 }
 
-.item{
+.item {
     position: relative;
     background-color: #fff;
     flex: 1 100%;
@@ -87,7 +89,7 @@ a{
     margin: 5px;
     padding: 0 20px 10px;
 }
-.item-title{
+.item-title {
     display: inline-block;
     width: 100%;
     margin-bottom: 10px;
@@ -99,7 +101,7 @@ a{
     text-transform: uppercase;
 }
 
-#informations ul{
+#informations ul {
     font-size: 13px;
     color: #a29429;
     line-height: 19px;
@@ -107,29 +109,29 @@ a{
     margin: 0;
     padding: 0;
 }
-#informations ul strong{
+#informations ul strong {
     color: #d7b915;
     font-weight: 300;
 }
 
-.stickbar{
+.stickbar {
     position: absolute;
     top: 0;
     right: 0;
 }
-.stickbar-item{
+.stickbar-item {
     display: inline-block;
     font-size: 14px;
     padding: 6px 7px;
     cursor: pointer;
     color: #d8d2a7;
 }
-.stickbar-item:hover{
+.stickbar-item:hover {
     background-color: #ece4bc;
     color: #fff;
 }
 
-.tooltip{
+.tooltip {
     display: inline-block;
     background-color: #ece4bc;
     margin-left: 4px;
@@ -138,10 +140,10 @@ a{
     color: #fff;
     text-decoration: none;
 }
-.tooltip:hover{
+.tooltip:hover {
     background-color: #e0d7af;
 }
-.preline[data-balloon]:after{
+.preline[data-balloon]:after {
     white-space: pre-line !important;
 }
 
@@ -149,46 +151,44 @@ a{
     padding: 6px 8px;
 }
 
-footer{
+footer {
     position: relative;
     z-index: 100;
     background-color: #bab185;
-    box-shadow: 0 5px 5px rgba(0,0,0,0.1)inset;
+    box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1) inset;
     padding: 10px 0 20px;
     text-align: center;
     color: #e4dcb4;
 }
-footer ul li{
+footer ul li {
     display: inline-block;
     margin: 0 8px;
     list-style-type: none;
 }
-footer ul li::before{
-    content: '-';
+footer ul li::before {
+    content: "-";
     margin-right: 16px;
 }
-footer ul li:first-child::before{
-    content: '';
+footer ul li:first-child::before {
+    content: "";
 }
 
-footer a{
+footer a {
     color: #fff6ce;
     text-decoration: none;
 }
-footer a:hover{
+footer a:hover {
     color: #fff2b9;
 }
-footer .copyright{
-
+footer .copyright {
 }
 
 @media screen and (max-width: 860px) {
-    .container{
+    .container {
         flex-direction: column;
     }
-    #left-side{
+    #left-side {
         order: 2;
     }
 }
-
 </style>

@@ -7,7 +7,7 @@
 
 <script>
 export default {
-    name: 'Letter',
+    name: "Letter",
     props: {
         pos: Number,
         lcipher: String,
@@ -16,53 +16,56 @@ export default {
     },
     methods: {
         onClick() {
-            this.$emit('click', {pos: this.pos})
+            this.$emit("click", { pos: this.pos });
         }
     }
-}
+};
 </script>
 
 <style lang="scss">
-.letter{
+.letter {
     cursor: text;
     vertical-align: top;
-    display:inline-block;
+    display: inline-block;
     margin: -1px;
     border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-    
-    .up, .down{
+
+    .up,
+    .down {
         width: 12px;
         height: 20px;
         padding: 0px 3px 0px 3px;
-        background: linear-gradient(#fcf8ea,#ffffff,#f8efd3);
-        font: normal 12px/22px "Lucida Console", "Trebuchet MS", Arial, Helvetica, sans-serif;
+        background: linear-gradient(#fcf8ea, #ffffff, #f8efd3);
+        font: normal 12px/22px "Lucida Console", "Trebuchet MS", Arial,
+            Helvetica, sans-serif;
         text-align: center;
         /* text-transform: uppercase; */
-        color: #63562E;
-        border: #D0BE90 solid 1px;
+        color: #63562e;
+        border: #d0be90 solid 1px;
     }
-    .up{
+    .up {
         margin-bottom: -1px;
         opacity: 0.5;
     }
 
-    &:hover .up, &:hover .down{
+    &:hover .up,
+    &:hover .down {
         font-weight: 700;
     }
-    
+
     // &.active .up, &.active .down {
     //     font-weight: 700;
     //     color: #d00;
     // }
-    
+
     .selected {
-        background: linear-gradient(#d00,#e00,#c80000);
+        background: linear-gradient(#d00, #e00, #c80000);
         color: #fff !important;
     }
 }
 
 @for $i from 0 through 255 {
-    .active-#{$i} .letter-#{$i} div{
+    .active-#{$i} .letter-#{$i} div {
         font-weight: 700;
         color: #d00;
     }

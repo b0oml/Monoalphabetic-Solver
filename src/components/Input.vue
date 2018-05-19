@@ -10,15 +10,15 @@
                             <input v-model="mode" type="radio" id="manual" name="cryptanalysis-mode" value="manual">
                             <label for="manual">Manual (no analysis)</label>
                         </p>
-                        <p>                
+                        <p>
                             <input v-model="mode" type="radio" id="semiauto-freq" name="cryptanalysis-mode" value="semiauto-freq">
                             <label for="semiauto-freq">Semi-automatic: frequency analysis</label><br>
                         </p>
-                        <p>                
+                        <p>
                             <input v-model="mode" type="radio" id="semiauto-pattern" name="cryptanalysis-mode" value="semiauto-pattern">
                             <label for="semiauto-pattern">Semi-automatic: pattern analysis</label><br>
                         </p>
-                        <p>                
+                        <p>
                             <input v-model="mode" type="radio" id="semiauto-pattern-fast" name="cryptanalysis-mode" value="semiauto-pattern-fast">
                             <label for="semiauto-pattern-fast">Semi-automatic: pattern analysis (fast)</label>
                         </p>
@@ -107,157 +107,163 @@
 </template>
 
 <script>
-import analyse from '../analyse.js'
+import analyse from "../analyse.js";
 
 export default {
-    name: 'Input',
+    name: "Input",
     data() {
         return {
-            mode: 'manual',
-            choosedLanguage: 'English',
-            alphabetType: 'predefined',
-            choosedAlphabet: 'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+            mode: "manual",
+            choosedLanguage: "English",
+            alphabetType: "predefined",
+            choosedAlphabet: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
             ignoreCase: true,
             text: ""
-        }
+        };
     },
     computed: {
         ic() {
-            if(this.text == "" || this.text.length <= 10) return 0.0
+            if (this.text == "" || this.text.length <= 10) return 0.0;
 
-            const text = this.text.toLowerCase()
-            const letters = {}
-            let lettersCount = 0
-            for(const l of text) {
-                if(!letters[l]) {
-                    letters[l] = 1
+            const text = this.text.toLowerCase();
+            const letters = {};
+            let lettersCount = 0;
+            for (const l of text) {
+                if (!letters[l]) {
+                    letters[l] = 1;
                 } else {
-                    letters[l] += 1
+                    letters[l] += 1;
                 }
-                lettersCount += 1
+                lettersCount += 1;
             }
-            
-            const denom = lettersCount * (lettersCount - 1)
 
-            let ret = 0.0
-            for(const v of Object.values(letters)) {
-                ret += (v * (v - 1)) / denom
+            const denom = lettersCount * (lettersCount - 1);
+
+            let ret = 0.0;
+            for (const v of Object.values(letters)) {
+                ret += v * (v - 1) / denom;
             }
-            return Math.round(ret * 1000) / 1000
+            return Math.round(ret * 1000) / 1000;
         },
         detectedLanguage() {
-            if(this.ic < 0.05) return 'Polyalphabetic'
+            if (this.ic < 0.05) return "Polyalphabetic";
 
             const ics = {
-                "English": 0.0667,
-                "French": 0.0778,
+                English: 0.0667,
+                French: 0.0778
                 // "Allemand": 0,0762,
                 // "Espagnol": 0,0770,
-            }
-            let best = "English"
-            let score = Math.abs(ics[best] - this.ic)
-            for(let key in ics) {
-                let currentScore = Math.abs(ics[key] - this.ic)
-                if(currentScore < score) {
-                    best = key
-                    score = currentScore
+            };
+            let best = "English";
+            let score = Math.abs(ics[best] - this.ic);
+            for (let key in ics) {
+                let currentScore = Math.abs(ics[key] - this.ic);
+                if (currentScore < score) {
+                    best = key;
+                    score = currentScore;
                 }
             }
             //Change selected language
-            // this.choosedLanguage = best            
-            return best
-        },
+            // this.choosedLanguage = best
+            return best;
+        }
     },
     methods: {
         decode(e) {
-            e.preventDefault()
-            console.log('Decode start')
+            e.preventDefault();
+            console.log("Decode start");
 
             //Compuet text
-            let text = this.text
-            if(this.ignoreCase) {
-                text = text.toUpperCase()
+            let text = this.text;
+            if (this.ignoreCase) {
+                text = text.toUpperCase();
             }
 
             //Remove alphabet duplicat
-            const letters = this.choosedAlphabet.split('').reverse()
-            const abc = letters.filter((x, i) => letters.indexOf(x, i + 1) == -1)
+            const letters = this.choosedAlphabet.split("").reverse();
+            const abc = letters
+                .filter((x, i) => letters.indexOf(x, i + 1) == -1)
                 .reverse()
-                .join('')
-            console.log('Alphabet', abc);
-
+                .join("");
+            console.log("Alphabet", abc);
 
             // Compute substitution
-            const sub = {}
-            for(let k of abc) {
-                sub[k] = k
+            const sub = {};
+            for (let k of abc) {
+                sub[k] = k;
             }
 
             //Algos
-            const sub2 = analyse.frequenceAnalysis(sub, text, analyse.FRENCH_FREQS)
-            
+            const sub2 = analyse.frequenceAnalysis(
+                sub,
+                text,
+                analyse.FRENCH_FREQS
+            );
 
-            this.$emit('decode', {text, sub: sub2})
+            this.$emit("decode", { text, sub: sub2 });
         },
         onFileChange(e) {
             // Get file
             const files = e.target.files || e.dataTransfer.files;
-            if (!files.length)
-                return
+            if (!files.length) return;
             // Get file content
             const reader = new FileReader();
             reader.readAsText(files[0], "UTF-8");
             reader.onload = evt => {
-                if (evt.target.result.length > 10000){
+                if (evt.target.result.length > 10000) {
                     // Truncate file content
-                    this.text = evt.target.result.substr(0,10000)
+                    this.text = evt.target.result.substr(0, 10000);
                     // Toast
-                    this.$toasted.show(`File ${files[0].name} truncated to 10000 characters`, { 
-                        theme: "primary",
-                        position: "bottom-right", 
-                        duration : 3000
-                    });    
-                }
-                else{
+                    this.$toasted.show(
+                        `File ${files[0].name} truncated to 10000 characters`,
+                        {
+                            theme: "primary",
+                            position: "bottom-right",
+                            duration: 3000
+                        }
+                    );
+                } else {
                     // File content
-                    this.text = evt.target.result
+                    this.text = evt.target.result;
                     // Toast
-                    this.$toasted.show(`File ${files[0].name} successfully imported`, { 
-                        theme: "primary",
-                        position: "bottom-right", 
-                        duration : 3000
-                    });
+                    this.$toasted.show(
+                        `File ${files[0].name} successfully imported`,
+                        {
+                            theme: "primary",
+                            position: "bottom-right",
+                            duration: 3000
+                        }
+                    );
                 }
-            }
+            };
             reader.onerror = () => {
                 // Toast
-                this.$toasted.show(`Failed to import ${files[0].name}`, { 
+                this.$toasted.show(`Failed to import ${files[0].name}`, {
                     theme: "primary",
                     type: "error",
-                    position: "bottom-right", 
-                    duration : 3000
+                    position: "bottom-right",
+                    duration: 3000
                 });
-            }
+            };
         }
     },
-    components: {
-    }
-}
+    components: {}
+};
 </script>
 
 <style scoped>
-#header .title{
+#header .title {
     display: block;
     margin: 0 0 15px;
     padding-top: 15px;
     /* font-family: 'Abril Fatface', cursive; */
-    font-family: 'Dancing Script';
+    font-family: "Dancing Script";
     text-align: center;
     color: #caba49;
-    font-size: 26px;    
+    font-size: 26px;
     /* letter-spacing: 1px; */
 }
-#header .description{
+#header .description {
     display: block;
     color: #605716;
     font-size: 15px;
@@ -265,27 +271,27 @@ export default {
     padding-bottom: 10px;
 }
 
-form p{
+form p {
     margin: 0;
 }
-form label{
+form label {
     color: #a29429;
     font-size: 13px;
     position: relative;
     bottom: 3px;
 }
-fieldset{
+fieldset {
     padding-top: 10px;
     padding-bottom: 10px;
     margin: 2px 0;
     border: 1px solid #f9f5dd;
 }
-fieldset legend{
+fieldset legend {
     color: #605716;
     padding: 0 10px;
 }
 
-#cipher textarea{
+#cipher textarea {
     box-sizing: border-box;
     min-width: 100%;
     height: 250px;
@@ -294,13 +300,15 @@ fieldset legend{
     color: #605716;
     border: 1px solid #efe9cb;
 }
-select, input[type="text"], input[type="file"]{
+select,
+input[type="text"],
+input[type="file"] {
     box-sizing: border-box;
     width: 100%;
     margin: 4px 0;
 }
 
-input[type="submit"]{
+input[type="submit"] {
     display: block;
     width: 100%;
     margin: 0 auto;
@@ -310,33 +318,33 @@ input[type="submit"]{
     border: 0;
     color: #fff;
 }
-input[type="submit"]:hover{
+input[type="submit"]:hover {
     background-color: #cbc194;
 }
-input[type="file"]{
+input[type="file"] {
     color: #aaa479;
 }
 
-hr{
+hr {
     border: 0;
     border-bottom: 1px solid #f9f5dd;
 }
-form .title{
+form .title {
     display: block;
     color: #caba49;
     margin: 2px 0 5px;
 }
 
-.item-section{
+.item-section {
     padding: 6px 0 3px;
     font-size: 13px;
     color: #a29429;
 }
-.item-section strong{
+.item-section strong {
     color: #d7b915;
     font-weight: 300;
 }
-.warning{
+.warning {
     margin-top: 5px;
     padding: 5px 0;
     font-size: 14px;

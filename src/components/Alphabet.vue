@@ -14,11 +14,11 @@
 </template>
 
 <script>
-import Letter from './LockableLetter.vue'
-import Texte from './Texte.vue'
+import Letter from "./LockableLetter.vue";
+import Texte from "./Texte.vue";
 
 export default {
-    name: 'Alphabet',
+    name: "Alphabet",
     extends: Texte,
     props: {
         sub: Object,
@@ -27,35 +27,38 @@ export default {
     },
     methods: {
         sendLetter() {
-            let letter = Object.keys(this.sub)[this.pos]
-            this.$emit('select', letter)
+            let letter = Object.keys(this.sub)[this.pos];
+            this.$emit("select", letter);
         },
         key(e) {
-            const keyCode = e.keyCode
-            const key = e.key
+            const keyCode = e.keyCode;
+            const key = e.key;
             console.log(keyCode, key);
 
-            if(keyCode >= 112 && keyCode <= 123) return // Do nothing on Function key
+            if (keyCode >= 112 && keyCode <= 123) return; // Do nothing on Function key
 
             e.preventDefault();
-            if(keyCode == 37) { // Left
+            if (keyCode == 37) {
+                // Left
                 this.pos = Math.max(0, this.pos - 1);
-            } else if (keyCode == 39) { // Right
+            } else if (keyCode == 39) {
+                // Right
                 this.pos = Math.min(this.splittedText.length, this.pos + 1);
             } else {
-                if (key.length == 1) { //&& /[a-zA-Z0-9-_ ]/.test(key)
-                    this.$emit('change', {from: this.currentLetter, to: key})
+                if (key.length == 1) {
+                    //&& /[a-zA-Z0-9-_ ]/.test(key)
+                    this.$emit("change", { from: this.currentLetter, to: key });
                 }
             }
-            this.sendLetter()
+            this.sendLetter();
         },
-        toggleLock({pos}) {
-            let letter = Object.keys(this.sub)[pos]
-            this.$emit('lock', {from: letter})
+        toggleLock({ pos }) {
+            let letter = Object.keys(this.sub)[pos];
+            this.$emit("lock", { from: letter });
         }
     },
     components: {
         Letter
     }
-}
+};
 </script>
