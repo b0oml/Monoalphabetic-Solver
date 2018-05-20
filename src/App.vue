@@ -1,34 +1,23 @@
 <template>
   <div id="app">
-    <Input v-if="page == 0" @decode="decode"/>
-    <Decode v-else-if="page == 1" @return="back" :textIn="textIn" :subIn="subIn"/>
+    <Input v-if="page == 0"/>
+    <Decode v-else-if="page == 1"/>
   </div>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+
 import Decode from "./components/Decode.vue";
 import Input from "./components/Input.vue";
 
 export default {
     name: "app",
     data() {
-        return {
-            page: 0,
-            textIn: "",
-            subIn: {}
-        };
+        return {};
     },
-    methods: {
-        decode({ sub, text }) {
-            this.textIn = text;
-            this.subIn = sub;
-
-            // Open decode page
-            this.page = 1;
-        },
-        back() {
-            this.page = 0;
-        }
+    computed: {
+        ...mapGetters(["page"])
     },
     components: {
         Decode,

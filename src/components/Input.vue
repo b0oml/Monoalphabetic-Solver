@@ -200,7 +200,12 @@ export default {
                 analyse.FRENCH_FREQS
             );
 
-            this.$emit("decode", { text, sub: sub2 });
+            this.$store.commit("setSettings", {
+                caseSensitive: !this.ignoreCase
+            });
+            this.$store.commit("setText", text);
+            this.$store.commit("setSubstitution", sub2);
+            this.$store.commit("setPage", 1);
         },
         onFileChange(e) {
             // Get file

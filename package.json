@@ -10,7 +10,8 @@
   "dependencies": {
     "vue": "^2.5.13",
     "vue-clipboard2": "0.0.9",
-    "vue-toasted": "^1.1.24"
+    "vue-toasted": "^1.1.24",
+    "vuex": "^3.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.0.0-beta.3",
