@@ -109,7 +109,42 @@ const freqs = [
     ['Z', 0.0007]
 ]
 
+const analyse = (text, alphabet, {
+    ignoreCase,
+    mode,
+    language
+}) => {
+    return new Promise((resolve, reject) => {
+            return setTimeout(resolve, 200)
+        })
+        .then(() => {
+            //Remove alphabet duplicat
+            const letters = alphabet.split("").reverse();
+            const abc = letters
+                .filter((x, i) => letters.indexOf(x, i + 1) == -1)
+                .reverse()
+                .join("");
+            console.log("Alphabet", abc);
+
+            // Compute substitution
+            const sub = {};
+            for (let k of abc) {
+                sub[k] = k;
+            }
+
+            //Algos
+            const sub2 = frequenceAnalysis(
+                sub,
+                text,
+                freqs
+            );
+
+            return sub2
+        })
+}
+
 export default {
+    analyse,
     frequenceAnalysis,
     FRENCH_FREQS: freqs
 }

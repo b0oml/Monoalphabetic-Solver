@@ -99,7 +99,7 @@
                     <span class="title">📂 Or import your cipher from a file</span>
                     <input type="file" name="cipher-file" id="cipher-file" @change="onFileChange">
                     <hr>
-                    <input type="submit" value="Decrypt">
+                    <input type="submit" :disabled="loading" :value="loading ? 'Loading' : 'Decrypt'">
                 </form>
             </div>
         </div>
@@ -107,7 +107,7 @@
 </template>
 
 <script>
-import analyse from "../analyse.js";
+import { mapGetters } from "vuex";
 
 export default {
     name: "Input",
@@ -122,6 +122,9 @@ export default {
         };
     },
     computed: {
+        ...mapGetters({
+            loading: "loadingAnalysis"
+        }),
         ic() {
             if (this.text == "" || this.text.length <= 10) return 0.0;
 
@@ -173,39 +176,15 @@ export default {
             e.preventDefault();
             console.log("Decode start");
 
-            //Compuet text
-            let text = this.text;
-            if (this.ignoreCase) {
-                text = text.toUpperCase();
-            }
-
-            //Remove alphabet duplicat
-            const letters = this.choosedAlphabet.split("").reverse();
-            const abc = letters
-                .filter((x, i) => letters.indexOf(x, i + 1) == -1)
-                .reverse()
-                .join("");
-            console.log("Alphabet", abc);
-
-            // Compute substitution
-            const sub = {};
-            for (let k of abc) {
-                sub[k] = k;
-            }
-
-            //Algos
-            const sub2 = analyse.frequenceAnalysis(
-                sub,
-                text,
-                analyse.FRENCH_FREQS
-            );
-
-            this.$store.commit("setSettings", {
-                caseSensitive: !this.ignoreCase
+            this.$store.dispatch("startDecode", {
+                text: this.text,
+                alphabet: this.choosedAlphabet,
+                settings: {
+                    ignoreCase: this.ignoreCase,
+                    mode: this.mode,
+                    language: this.choosedLanguage
+                }
             });
-            this.$store.commit("setText", text);
-            this.$store.commit("setSubstitution", sub2);
-            this.$store.commit("setPage", 1);
         },
         onFileChange(e) {
             // Get file
@@ -325,6 +304,9 @@ input[type="submit"] {
 }
 input[type="submit"]:hover {
     background-color: #cbc194;
+}
+input[type="submit"]:disabled {
+    background-color: #817233;
 }
 input[type="file"] {
     color: #aaa479;

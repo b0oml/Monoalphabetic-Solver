@@ -3,17 +3,19 @@
  */
 import Vue from 'vue'
 
+import analyse from '../analyse'
+
 const ESCAPE_CHAR = "\u001b"
 
 // initial state
-// shape: [{ id, quantity }]
 const state = {
     text: "",
     substitution: {},
     currentLetter: "",
     page: 0,
     //Settings
-    caseSensitive: false
+    ignoreCase: false,
+    loadingAnalysis: false,
 }
 
 // getters
@@ -24,10 +26,11 @@ const getters = {
     substitution: state => state.substitution,
     currentLetter: state => state.currentLetter,
     splittedText: state => state.text.split(""),
+    loadingAnalysis: state => state.loadingAnalysis,
     settings: ({
-        caseSensitive
+        ignoreCase
     }) => ({
-        caseSensitive
+        ignoreCase
     }),
     //Advenced getters
     ic: (state) => {
@@ -121,28 +124,6 @@ const getters = {
 
 // actions
 const actions = {
-    // checkout({
-    //     commit,
-    //     state
-    // }, products) {
-    //     const savedCartItems = [...state.added]
-    //     commit('setCheckoutStatus', null)
-    //     // empty cart
-    //     commit('setCartItems', {
-    //         items: []
-    //     })
-    //     shop.buyProducts(
-    //         products,
-    //         () => commit('setCheckoutStatus', 'successful'),
-    //         () => {
-    //             commit('setCheckoutStatus', 'failed')
-    //             // rollback to the cart saved before sending the request
-    //             commit('setCartItems', {
-    //                 items: savedCartItems
-    //             })
-    //         }
-    //     )
-    // },
     addFake({
         commit,
         state
@@ -156,6 +137,40 @@ const actions = {
         if (state.text[position] == ESCAPE_CHAR)
             commit("setText", state.text.slice(0, position) + state.text.slice(position + 1))
     },
+    startDecode({
+        commit
+    }, {
+        text,
+        alphabet,
+        settings: {
+            ignoreCase,
+            mode,
+            language
+        }
+    }) {
+        commit('setLoadingAnalysis', true)
+
+        //Compuet text
+        if (ignoreCase) {
+            text = text.toUpperCase();
+        }
+
+        commit("setText", text);
+        commit("setSettings", {
+            ignoreCase
+        });
+
+        analyse.analyse(text, alphabet, {
+                ignoreCase,
+                mode,
+                language
+            })
+            .then(sub => {
+                commit("setSubstitution", sub);
+                commit('setLoadingAnalysis', false)
+                commit("setPage", 1);
+            })
+    },
 }
 
 // mutations
@@ -164,7 +179,7 @@ const mutations = {
         from,
         to
     }) {
-        if (!state.caseSensitive) {
+        if (state.ignoreCase) {
             to = to.toUpperCase()
         }
 
@@ -180,7 +195,7 @@ const mutations = {
         state.substitution = substitution
     },
     setText(state, text) {
-        if (!state.caseSensitive) {
+        if (state.ignoreCase) {
             text = text.toUpperCase()
         }
         state.text = text
@@ -189,9 +204,12 @@ const mutations = {
         state.page = page
     },
     setSettings(state, {
-        caseSensitive
+        ignoreCase
     }) {
-        state.caseSensitive = caseSensitive
+        state.ignoreCase = ignoreCase
+    },
+    setLoadingAnalysis(state, loading) {
+        state.loadingAnalysis = loading
     }
 }
 
