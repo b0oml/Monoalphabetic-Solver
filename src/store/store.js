@@ -11,6 +11,7 @@ const ESCAPE_CHAR = "\u001b"
 const state = {
     text: "",
     substitution: {},
+    locked: {},
     currentLetter: "",
     page: 0,
     //Settings
@@ -24,6 +25,7 @@ const getters = {
     page: state => state.page,
     text: state => state.text,
     substitution: state => state.substitution,
+    locked: state => state.locked,
     currentLetter: state => state.currentLetter,
     splittedText: state => state.text.split(""),
     loadingAnalysis: state => state.loadingAnalysis,
@@ -166,9 +168,13 @@ const actions = {
                 language
             })
             .then(sub => {
-                commit("setSubstitution", sub);
-                commit('setLoadingAnalysis', false)
-                commit("setPage", 1);
+                const keys = Object.keys(sub)
+                if (keys.length != 0) {
+                    commit("setSubstitution", sub);
+                    commit("setCurrentLetter", keys.pop());
+                    commit('setLoadingAnalysis', false)
+                    commit("setPage", 1);
+                }
             })
     },
 }
@@ -193,6 +199,9 @@ const mutations = {
     },
     setSubstitution(state, substitution) {
         state.substitution = substitution
+        for (let k in substitution) {
+            state.locked[k] = false;
+        }
     },
     setText(state, text) {
         if (state.ignoreCase) {
@@ -210,6 +219,11 @@ const mutations = {
     },
     setLoadingAnalysis(state, loading) {
         state.loadingAnalysis = loading
+    },
+    toggleLock(state, letter) {
+        if (state.locked.hasOwnProperty(letter)) {
+            state.locked[letter] = !state.locked[letter];
+        }
     }
 }
 

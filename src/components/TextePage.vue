@@ -54,9 +54,13 @@ export default {
     },
     methods: {
         sendLetter() {
-            let offset = this.pageSize * this.page;
+            const offset = this.pageSize * this.page;
             const letter = this.splittedText[offset + this.pos];
-            this.$store.commit("setCurrentLetter", letter);
+            if (letter) {
+                this.$store.commit("setCurrentLetter", letter);
+            } else {
+                console.error("Click error", this.pos);
+            }
         },
         clickLetter({ pos }) {
             if (this.pos != pos) {

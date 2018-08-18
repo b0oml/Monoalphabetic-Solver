@@ -7,26 +7,28 @@
 </template>
 
 <script>
-import Letter from "./Letter.vue";
 export default {
     name: "LockableLetter",
-    extends: Letter,
     props: {
+        lcipher: String,
+        lplain: String,
+        selected: Boolean,
         locked: {
             type: Boolean,
             default: true
         }
     },
     methods: {
-        onLock(e) {
-            e.stopPropagation();
-            this.$emit("lock", { pos: this.pos });
+        onClick() {
+            this.$emit("click", { cipher: this.lcipher });
+        },
+        onLock() {
+            this.$emit("lock", { cipher: this.lcipher });
         }
     }
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .locker {
     width: 22px;

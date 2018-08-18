@@ -1,12 +1,10 @@
 <template>
 <div class="text" @keydown="key" tabindex="1">
-    <!-- <div class="tmp">Pos : {{this.pos}}</div> -->
-    <Letter v-for="(plain, cipher, i) in substitution"
-        :key="i"
-        :pos="i"
-        :lplain="plain"
+    <Letter v-for="(plain, cipher) in substitution"
+        :key="cipher"
         :lcipher="cipher"
-        :selected="i == pos"
+        :lplain="plain"
+        :selected="currentLetter == cipher"
         :locked="locked[cipher]"
         @lock="toggleLock"
         @click="clickLetter" />
@@ -21,29 +19,14 @@ import Letter from "./LockableLetter.vue";
 
 export default {
     name: "Alphabet",
-    data() {
-        const locked = {};
-        for (let k in this.substitution) {
-            locked[k] = false;
-        }
-        return {
-            locked,
-            pos: 0
-        };
-    },
     methods: {
-        sendLetter() {
-            let letter = this.keys[this.pos];
-            this.$store.commit("setCurrentLetter", letter);
-        },
-        clickLetter({ pos }) {
-            this.pos = pos;
-            this.sendLetter();
+        clickLetter({ cipher }) {
+            this.$store.commit("setCurrentLetter", cipher);
         },
         key(e) {
             const keyCode = e.keyCode;
             const key = e.key;
-            console.log(keyCode, key);
+            // console.log(keyCode, key);
 
             if (keyCode >= 112 && keyCode <= 123) return; // Do nothing on Function key
 
@@ -74,17 +57,12 @@ export default {
                 }
             }
         },
-        toggleLock({ pos }) {
-            console.log("Lock sub");
-            let letter = Object.keys(this.substitution)[pos];
-            Vue.set(this.locked, letter, !this.locked[letter]);
+        toggleLock({ cipher }) {
+            this.$store.commit("toggleLock", cipher);
         }
     },
     computed: {
-        ...mapGetters(["substitution", "currentLetter"]),
-        keys() {
-            return Object.keys(this.substitution);
-        }
+        ...mapGetters(["substitution", "currentLetter", "locked"])
     },
     components: {
         Letter
